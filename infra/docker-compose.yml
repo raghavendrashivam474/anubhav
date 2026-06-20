@@ -1,0 +1,21 @@
+﻿services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: anubhav_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: anubhav
+      POSTGRES_PASSWORD: anubhav_dev_pass
+      POSTGRES_DB: anubhav_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - anubhav_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U anubhav"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  anubhav_pgdata:
