@@ -8,9 +8,17 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
+    # App
     APP_NAME: str = "Anubhav API"
     APP_ENV: str = "development"
+
+    # Database
     DATABASE_URL: str
+
+    # Clerk Auth
+    CLERK_SECRET_KEY: str
+    CLERK_ISSUER: str
+    CLERK_JWKS_URL: str
 
 
 settings = Settings()

@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
-from app.routers import health
+from app.routers import health, auth  # ← Added 'auth'
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -10,7 +10,6 @@ app = FastAPI(
     description="Anubhav — Capture experiences today. Retrieve wisdom tomorrow.",
 )
 
-# CORS (allow Next.js frontend)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000"],
@@ -19,8 +18,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Routes
 app.include_router(health.router)
+app.include_router(auth.router)  # ← Added
 
 
 @app.get("/")
