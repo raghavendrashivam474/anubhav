@@ -2,7 +2,7 @@
 
 # Junior Developer Handover Document
 
-Version: 2.0
+Version: 3.0
 
 Prepared By:
 Raghavendra Singh
@@ -11,7 +11,7 @@ Project Status:
 Pre-MVP
 
 Current Milestone:
-CRUD Complete
+Search Complete
 
 Audience:
 Incoming Junior Developer
@@ -83,9 +83,15 @@ CRUD:
 ✅ Complete
 
 Search:
-🚧 Next
+✅ Complete
 
 AI Extraction:
+🚧 Next
+
+Embeddings:
+⏳ Pending
+
+Semantic Search:
 ⏳ Pending
 
 Reminders:
@@ -118,15 +124,11 @@ Environment starts successfully.
 
 Tables:
 
-users
-
-anubhavs
-
-tags
-
-anubhav_tags
-
-reminders
+* users
+* anubhavs
+* tags
+* anubhav_tags
+* reminders
 
 All migrations are managed through Alembic.
 
@@ -157,15 +159,11 @@ Authentication is working correctly.
 
 Implemented Endpoints:
 
-POST /anubhavs
-
-GET /anubhavs
-
-GET /anubhavs/{id}
-
-PATCH /anubhavs/{id}
-
-DELETE /anubhavs/{id}
+* POST /anubhavs
+* GET /anubhavs
+* GET /anubhavs/{id}
+* PATCH /anubhavs/{id}
+* DELETE /anubhavs/{id}
 
 Verified:
 
@@ -175,7 +173,30 @@ Verified:
 * Tag normalization
 * Cascade delete
 
-CRUD should be considered stable.
+CRUD is considered stable.
+
+---
+
+## Search
+
+Implemented Endpoint:
+
+GET /anubhavs/search
+
+Verified Features:
+
+* User-scoped search
+* Keyword search
+* Tag search
+* Category filtering
+* Pagination
+* Case-insensitive matching
+
+Validation:
+
+10/10 search test cases passed.
+
+Search is considered stable.
 
 ---
 
@@ -270,88 +291,67 @@ Prefer existing project patterns.
 
 ---
 
-# 6. Immediate Task
-
-Current Sprint Goal:
-
-Search Functionality
-
-Implement:
-
-GET /anubhavs/search
-
----
-
-# 7. Search Requirements
-
-Features:
-
-Keyword Search
-
-Search Fields:
-
-* title
-* lesson
-* observation
-* advice_to_future_self
-
-Tag Search
-
-Category Filter
-
-Pagination
-
-User Scoping
-
----
-
-Implementation Guidance
-
-Use PostgreSQL ILIKE.
-
-Do not implement semantic search yet.
-
-Do not introduce Elasticsearch.
-
-Do not introduce external search services.
-
-Simple search is sufficient for MVP.
-
----
-
-# 8. After Search
-
-Next Task:
+# 6. Current Sprint Goal
 
 AI Lesson Extraction
 
+Status:
+
+Planning complete.
+
+Implementation begins next development session.
+
 ---
 
-Input Example
+# 7. AI Lesson Extraction
 
-"My friend delayed every opportunity waiting to feel ready."
+Objective:
 
-Expected Output
+Convert raw experiences into structured wisdom.
+
+Recommended Endpoint:
+
+POST /anubhavs/{id}/extract
+
+Authentication:
+
+Required
+
+Ownership:
+
+Required
+
+Expected Output:
+
+{
+"lesson": "...",
+"summary": "...",
+"tags": ["...", "..."]
+}
+
+Example:
+
+Input:
+
+"I kept delaying opportunities because I never felt ready."
+
+Expected Output:
 
 Lesson:
-
 Action creates confidence.
 
 Summary:
-
 Waiting for certainty often delays growth.
 
 Tags:
 
-career
-growth
-opportunity
+* growth
+* confidence
+* career
 
----
+Implementation:
 
-Requirements
-
-Use OpenAI structured responses.
+OpenAI structured outputs.
 
 Store:
 
@@ -359,11 +359,11 @@ Store:
 * summary
 * tags
 
-in the database.
+inside the database.
 
 ---
 
-# 9. After AI Extraction
+# 8. After AI Extraction
 
 Implement Embeddings.
 
@@ -383,13 +383,13 @@ Future semantic search depends on this.
 
 ---
 
-# 10. After Embeddings
+# 9. After Embeddings
 
 Implement Semantic Search.
 
 Goal:
 
-Search by meaning instead of exact words.
+Search by meaning rather than exact words.
 
 Example:
 
@@ -399,15 +399,15 @@ confidence
 
 Should retrieve:
 
-action
-risk-taking
-growth
+* action
+* risk-taking
+* growth
 
 Even when exact keywords are absent.
 
 ---
 
-# 11. Reminder System
+# 10. Reminder System
 
 Users can schedule reminders:
 
@@ -426,21 +426,16 @@ Email delivery can initially be mocked.
 
 ---
 
-# 12. Frontend Requirements
+# 11. Frontend Requirements
 
-Pages Needed
+Pages Needed:
 
-Authentication
-
-Dashboard
-
-Create Anubhav
-
-Timeline
-
-Search
-
-Settings
+* Authentication
+* Dashboard
+* Create Anubhav
+* Timeline
+* Search
+* Settings
 
 Priority:
 
@@ -450,7 +445,7 @@ Visual polish later.
 
 ---
 
-# 13. MVP Completion Criteria
+# 12. MVP Completion Criteria
 
 A user must be able to:
 
@@ -469,21 +464,19 @@ MVP is complete.
 
 ---
 
-# 14. Validation Goals
+# 13. Validation Goals
 
 Do not build advanced features until:
 
-50 Users
-
-20 Entries Per User
-
-1000 Total Entries
+* 50 Users
+* 20 Entries Per User
+* 1000 Total Entries
 
 are achieved.
 
 ---
 
-# 15. Explicitly Out of Scope
+# 14. Explicitly Out of Scope
 
 Do NOT build:
 
@@ -501,36 +494,45 @@ These are intentionally deferred.
 
 ---
 
-# 16. Known Lessons Learned
+# 15. Known Lessons Learned
 
 Lesson #1
 
-When debugging failures, verify infrastructure first.
+Verify infrastructure before debugging application code.
 
-During CRUD testing:
+Incident:
 
 POST /anubhavs returned 500.
 
 Root Cause:
 
-PostgreSQL container had stopped.
+PostgreSQL container stopped.
 
 Resolution:
 
-Restarted via:
-
-npm run db:up
-
-Lesson:
-
-Do not trust the layer mentioned in the error message.
-Verify infrastructure first.
-
-This lesson is stored inside Anubhav itself.
+Restarted container.
 
 ---
 
-# 17. Success Definition
+Lesson #2
+
+Authentication errors may indicate service identity problems rather than credential issues.
+
+Incident:
+
+password authentication failed for user "anubhav"
+
+Root Cause:
+
+Native Windows PostgreSQL service intercepted localhost:5432 connections.
+
+Resolution:
+
+Docker PostgreSQL moved to localhost:5433.
+
+---
+
+# 16. Success Definition
 
 Success is not:
 
@@ -552,23 +554,23 @@ That is the outcome the project is optimizing for.
 
 ---
 
-# 18. Your Immediate Assignment
+# 17. Immediate Assignment
 
 Priority 1
 
-Complete Search.
+Implement AI Lesson Extraction.
 
 Priority 2
 
-Complete AI Extraction.
+Implement Embeddings.
 
 Priority 3
 
-Complete Embeddings.
+Implement Semantic Search.
 
 Priority 4
 
-Complete Reminders.
+Implement Reminders.
 
 Priority 5
 
@@ -582,11 +584,8 @@ Follow existing patterns.
 
 Avoid scope creep.
 
-Keep the implementation simple.
+Keep implementation simple.
 
-When uncertain, read:
+When uncertain:
 
-README.md
-
-
-and preserve alignment with the product mission.
+Read README.md first.
