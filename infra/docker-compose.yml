@@ -8,7 +8,7 @@
       POSTGRES_PASSWORD: anubhav_dev_pass
       POSTGRES_DB: anubhav_db
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - anubhav_pgdata:/var/lib/postgresql/data
     healthcheck:

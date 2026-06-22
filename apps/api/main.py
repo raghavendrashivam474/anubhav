@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
-from app.routers import health, auth  # ← Added 'auth'
+from app.routers import auth, anubhav, health  # ← added 'anubhav'
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -19,7 +19,8 @@ app.add_middleware(
 )
 
 app.include_router(health.router)
-app.include_router(auth.router)  # ← Added
+app.include_router(auth.router)
+app.include_router(anubhav.router)  # ← added
 
 
 @app.get("/")
