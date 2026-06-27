@@ -38,3 +38,13 @@ yarn-error.log*
 *.pem
 
 handover.md
+
+# Token generator scripts
+apps/api/get_token.py
+apps/api/get_token.ps1
+
+# Python
+apps/api/.venv
+apps/api/__pycache__
+apps/api/**/__pycache__
+apps/api/**/*.pyc

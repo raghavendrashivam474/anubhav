@@ -20,5 +20,8 @@ class Settings(BaseSettings):
     CLERK_ISSUER: str
     CLERK_JWKS_URL: str
 
+    # Groq
+    GROQ_API_KEY: str
+
 
 settings = Settings()

@@ -1,5 +1,5 @@
 """
-HTTP endpoints for Anubhav CRUD + search.
+HTTP endpoints for Anubhav CRUD + search + AI extraction.
 All routes:
   - Require Clerk authentication (Rule 1)
   - Are user-scoped (Rule 2)
@@ -8,7 +8,7 @@ All routes:
 
 import uuid
 
-from fastapi import APIRouter, Depends, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.auth import get_current_user
@@ -21,7 +21,9 @@ from app.schemas.anubhav import (
     AnubhavRead,
     AnubhavUpdate,
 )
+from app.schemas.extraction import ExtractionResponse
 from app.services import anubhav_service
+from app.services.extraction_service import extract_wisdom
 
 
 router = APIRouter(prefix="/anubhavs", tags=["Anubhavs"])
@@ -97,6 +99,55 @@ async def search_my_anubhavs(
         db, user, query=q, page=page, page_size=page_size, category=category
     )
     return AnubhavList(items=items, total=total, page=page, page_size=page_size)
+
+
+# ──────────────────────────────────────────────────────────
+# EXTRACT
+# ⚠️ Must be declared BEFORE /{anubhav_id} routes.
+# ──────────────────────────────────────────────────────────
+
+@router.post(
+    "/{anubhav_id}/extract",
+    response_model=ExtractionResponse,
+    summary="Extract wisdom from an Anubhav using AI",
+)
+async def extract_anubhav_wisdom(
+    anubhav_id: uuid.UUID,
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(get_current_user),
+):
+    """
+    Uses Groq LLM to extract:
+    - lesson
+    - summary
+    - tags
+
+    Extraction is user-scoped.
+    Will not overwrite existing extraction.
+    """
+    result = await extract_wisdom(
+        anubhav_id=str(anubhav_id),
+        user_id=str(user.id),
+        db=db
+    )
+
+    if "error" in result:
+        if result["error"] == "not_found":
+            raise HTTPException(status_code=404, detail=result["message"])
+        if result["error"] == "already_extracted":
+            raise HTTPException(status_code=409, detail=result["message"])
+        if result["error"] == "ai_timeout":
+            raise HTTPException(status_code=503, detail=result["message"])
+        if result["error"] in ("invalid_response", "db_failure"):
+            raise HTTPException(status_code=500, detail=result["message"])
+
+    return ExtractionResponse(
+        message="Wisdom extracted successfully",
+        anubhav_id=result["anubhav_id"],
+        lesson=result["lesson"],
+        summary=result["summary"],
+        tags=result["tags"]
+    )
 
 
 # ──────────────────────────────────────────────────────────
