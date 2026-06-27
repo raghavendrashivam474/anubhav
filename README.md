@@ -2,13 +2,13 @@
 
 > **Preserve experiences today. Retrieve wisdom tomorrow.**
 
-Anubhav is a Personal Wisdom Preservation System designed to help people capture experiences, lessons, observations, and insights before they are forgotten.
+Anubhav is a Personal Wisdom Preservation System that helps people capture experiences, preserve life lessons, and retrieve meaningful wisdom when it becomes relevant.
 
-Modern tools help us store information.
+Modern software excels at storing information.
 
-**Anubhav helps us preserve wisdom.**
+**Anubhav is designed to preserve wisdom.**
 
-The platform transforms life experiences into structured, searchable, and retrievable knowledge that can be surfaced when it becomes relevant in the future.
+It transforms raw experiences into structured, searchable, and retrievable knowledge, enabling people to benefit from lessons they've already earned instead of repeatedly paying the cost of relearning them.
 
 ---
 
@@ -46,9 +46,9 @@ Anubhav exists to solve this problem.
 Anubhav enables users to:
 
 * Capture experiences quickly
-* Extract meaningful lessons
+* Extract meaningful lessons using AI
 * Organize wisdom intelligently
-* Preserve insights long-term
+* Preserve insights for the long term
 * Retrieve relevant lessons when needed
 * Build a personal wisdom archive over time
 
@@ -62,42 +62,44 @@ The goal is simple:
 
 ```text
 Experience
-    ↓
+      ↓
 Capture
-    ↓
+      ↓
 AI Understanding
-    ↓
-Categorization
-    ↓
+      ↓
+Structured Wisdom
+      ↓
 Preservation
-    ↓
+      ↓
 Retrieval
-    ↓
+      ↓
 Better Decisions
 ```
 
-Every feature in Anubhav is designed to strengthen this loop.
+Every feature in Anubhav strengthens this loop.
 
 ---
 
 # 🚀 MVP Features
 
-## Included
+## Implemented
 
 * Authentication
-* Create, Edit, Delete Anubhavs
+* Create, Edit & Delete Anubhavs
 * Categories & Tags
-* Search
+* Keyword Search
 * AI Lesson Extraction
-* Reminders
-* Timeline View
+* AI Summary Generation
+* AI Tag Generation
 
 ## Planned
 
+* Vector Embeddings
 * Semantic Search
+* Reminder System
+* Timeline View
 * Wisdom Recommendations
 * Context-Aware Retrieval
-* Decision Assistance
 
 ## Explicitly Out of Scope
 
@@ -107,7 +109,7 @@ Every feature in Anubhav is designed to strengthen this loop.
 * Voice Companion
 * Enterprise Features
 
-These features will only be considered after user validation.
+These features are intentionally deferred until user behavior validates the core product loop.
 
 ---
 
@@ -123,12 +125,12 @@ These features will only be considered after user validation.
 ## Backend
 
 * FastAPI
-* SQLAlchemy
-* Pydantic
+* SQLAlchemy 2.0
+* Pydantic v2
 
 ## Database
 
-* PostgreSQL
+* PostgreSQL 16
 * pgvector
 
 ## Infrastructure
@@ -138,24 +140,25 @@ These features will only be considered after user validation.
 
 ## AI
 
-* OpenAI
-* Embeddings
-* Lesson Extraction
-* Semantic Retrieval
+* Groq API (current implementation)
+* Provider-agnostic AI service architecture
+* Structured JSON extraction
+* Future embedding generation
+* Semantic retrieval pipeline
 
 ---
 
-# 📊 Project Status
+# 📊 Current Project Status
 
 ## Current Stage
 
-Pre-MVP Development
+**Pre-MVP**
 
 ## Current Focus
 
-Validate a single question:
+Validate one fundamental question:
 
-> Will people consistently preserve experiences and return to retrieve them?
+> **Will people consistently capture experiences and revisit them when making future decisions?**
 
 ## Validation Goal
 
@@ -163,7 +166,7 @@ Validate a single question:
 * 20 Entries Per User
 * 1000 Total Anubhavs
 
-Advanced AI features will only be developed after this milestone is achieved.
+Advanced AI capabilities will only be expanded after this milestone.
 
 ---
 
@@ -173,9 +176,8 @@ Advanced AI features will only be developed after this milestone is achieved.
 2. Retrieval is more important than storage.
 3. Wisdom is more valuable than volume.
 4. Privacy is non-negotiable.
-5. Reflection is preferred over engagement addiction.
-
-These principles guide all product decisions.
+5. Reflection over engagement.
+6. Validate user behavior before building sophisticated AI.
 
 ---
 
@@ -193,26 +195,27 @@ These principles guide all product decisions.
 
 ### Infrastructure
 
-* Turborepo monorepo setup
+* Turborepo monorepo
 * Docker development environment
-* PostgreSQL 16 configured
-* pgvector extension enabled
-* Local development environment documented
+* PostgreSQL 16
+* pgvector
+* Local development environment
 
 ### Backend Foundation
 
-* FastAPI application setup
-* Async SQLAlchemy 2.0
-* AsyncPG integration
-* Pydantic settings
-* Swagger documentation
+* FastAPI
+* Async SQLAlchemy
+* AsyncPG
+* Dependency Injection
+* Pydantic Settings
+* Swagger/OpenAPI
 * Health endpoint (`/health`)
 
 ### Database
 
-* Alembic migrations configured
-* Initial schema migrated
-* pgvector extension version-controlled
+* Alembic migrations
+* Version-controlled schema
+* pgvector extension
 
 Tables:
 
@@ -230,7 +233,7 @@ Tables:
 * JWKS validation
 * User auto-provisioning
 * Protected routes
-* `/auth/me` endpoint
+* `/auth/me`
 
 ### CRUD
 
@@ -251,12 +254,11 @@ Features:
 * Cascade delete
 * User-scoped access
 
-### Search & Retrieval
+### Search
 
 Implemented and validated:
 
 * GET `/anubhavs/search`
-* User-scoped search
 * Keyword search
 * Tag search
 * Category filtering
@@ -267,53 +269,57 @@ Validation:
 
 * 10/10 search test cases passed
 * Unauthorized access verified
-* Empty query validation verified
 * Pagination verified
 * Tag-only matches verified
-* Category filters verified
-
-### Validation Milestones
-
-* First authenticated user persisted
-* First real Anubhav stored
-* End-to-end API verification completed
-* First retrieval workflow completed successfully
-
----
-
-## 🚧 Current Sprint
+* Category filtering verified
 
 ### AI Lesson Extraction
 
+Implemented:
+
+* POST `/anubhavs/{id}/extract`
+* Provider-agnostic AI service layer
+* Structured JSON extraction
+* Lesson generation
+* Summary generation
+* Automatic tag generation
+* Ownership verification
+* Re-extraction protection
+* Database persistence
+
+Validation:
+
+* AI extraction verified
+* Re-extraction returns 409 Conflict
+* Unauthorized requests rejected
+* Invalid IDs handled correctly
+
+---
+
+# 🚧 Current Sprint
+
+## Embedding Generation
+
 Goal:
 
-Transform raw experiences into structured wisdom using OpenAI.
+Generate vector embeddings for every structured Anubhav and store them in PostgreSQL using pgvector.
 
-Expected Outputs:
-
-* Lesson
-* Summary
-* Tags
-
-Current Status:
-
-Planning complete.
-Implementation deferred to next development session.
+This forms the foundation for semantic retrieval.
 
 ---
 
-## ⏭️ Next
+# ⏭️ Next
 
-1. AI Lesson Extraction
-2. Embedding Generation
-3. Semantic Search
-4. Reminder System
-5. Next.js Frontend
-6. MVP Deployment
+1. Embedding Generation
+2. Semantic Search
+3. Reminder System
+4. Next.js Frontend
+5. MVP Deployment
+6. User Validation
 
 ---
 
-## 📊 MVP Progress
+# 📊 MVP Progress
 
 | Module               | Status     |
 | -------------------- | ---------- |
@@ -323,123 +329,32 @@ Implementation deferred to next development session.
 | Authentication       | ✅ Complete |
 | CRUD                 | ✅ Complete |
 | Search               | ✅ Complete |
-| AI Lesson Extraction | 🚧 Next    |
-| Embeddings           | ⏳ Pending  |
+| AI Lesson Extraction | ✅ Complete |
+| Embeddings           | 🚧 Next    |
 | Semantic Search      | ⏳ Pending  |
 | Reminders            | ⏳ Pending  |
 | Frontend             | ⏳ Pending  |
 | Deployment           | ⏳ Pending  |
 
-### Overall MVP Progress
+### Overall Progress
 
-Approximately **70% Complete**
+Approximately **80% of the backend MVP** is complete.
 
-Core Retrieval Loop:
+Current operational workflow:
 
-Capture → Store → Search → Retrieve
-
-✅ Operational
-
-
-## ✅ Completed
-
-### Product
-
-* Product vision finalized
-* MVP scope finalized
-* User personas defined
-* Validation strategy documented
-* Product principles documented
-
-### Infrastructure
-
-* Turborepo monorepo setup
-* Docker development environment
-* PostgreSQL 16 configured
-* pgvector extension enabled
-
-### Backend Foundation
-
-* FastAPI application setup
-* Async SQLAlchemy 2.0
-* AsyncPG integration
-* Pydantic settings
-* Swagger documentation
-* Health endpoint (`/health`)
-
-### Database
-
-* Alembic migrations configured
-* Initial schema migrated
-* pgvector extension version-controlled
-
-Tables:
-
-* users
-* anubhavs
-* tags
-* anubhav_tags
-* reminders
-* alembic_version
-
-### Authentication
-
-* Clerk integration
-* JWT verification
-* JWKS validation
-* User auto-provisioning
-* Protected routes
-* `/auth/me` endpoint
-
-### CRUD
-
-Implemented and verified:
-
-* POST `/anubhavs`
-* GET `/anubhavs`
-* GET `/anubhavs/{id}`
-* PATCH `/anubhavs/{id}`
-* DELETE `/anubhavs/{id}`
-
-Features:
-
-* Ownership validation
-* Pagination
-* Category filtering
-* Tag normalization
-* Cascade delete
-* User-scoped access
-
-### Validation
-
-* First authenticated user persisted
-* First real Anubhav stored
-* End-to-end API verification completed
-
----
-
-## 🚧 In Progress
-
-### Search
-
-Current implementation:
-
-* User-scoped keyword search
-* ILIKE search
-* Category filtering
-
-Testing and validation ongoing.
-
----
-
-## ⏭️ Next
-
-1. AI Lesson Extraction
-2. Embedding Generation
-3. Semantic Search
-4. Reminder System
-5. Frontend Development
-6. MVP Deployment
+```text
+Authentication
+        ↓
+Capture Experience
+        ↓
+Store
+        ↓
+AI Extraction
+        ↓
+Search
+        ↓
+Retrieve
+```
 
 ---
 
@@ -448,15 +363,16 @@ Testing and validation ongoing.
 ```text
 ┌─────────────────────────────────────────────┐
 │              Next.js Frontend               │
-│          (Planned / In Development)         │
+│                 (Planned)                   │
 └──────────────────┬──────────────────────────┘
                    │
-                   │ HTTPS + Clerk JWT
+             HTTPS + Clerk JWT
+                   │
                    ▼
 ┌─────────────────────────────────────────────┐
 │              FastAPI Backend                │
 │                                             │
-│ Routers → Services → Models                 │
+│ Routers → Services → AI → Models            │
 │ Async SQLAlchemy + JWT Verification         │
 └──────────────────┬──────────────────────────┘
                    │
@@ -481,6 +397,7 @@ anubhav/
 ├── apps/
 │   ├── api/
 │   │   ├── app/
+│   │   │   ├── ai/
 │   │   │   ├── core/
 │   │   │   ├── models/
 │   │   │   ├── routers/
@@ -489,22 +406,12 @@ anubhav/
 │   │   ├── alembic/
 │   │   ├── main.py
 │   │   └── requirements.txt
-│   │
 │   └── web/
-│       └── (Next.js frontend)
-│
 ├── infra/
-│   └── docker-compose.yml
-│
 ├── packages/
-│
 ├── docs/
-│   └── JUNIOR_DEV_HANDOVER.md
-│
 ├── .env.example
-│
 ├── package.json
-│
 └── README.md
 ```
 
@@ -512,27 +419,25 @@ anubhav/
 
 # 🧭 Product Roadmap
 
-## Phase 1
+### Phase 1 — Experience Vault
 
-Experience Vault
+Capture, organize, and preserve experiences.
 
-## Phase 2
+### Phase 2 — Wisdom Retrieval
 
-Wisdom Retrieval Engine
+Search and retrieve structured lessons.
 
-## Phase 3
+### Phase 3 — Semantic Intelligence
 
-Decision Assistant
+Meaning-based retrieval through embeddings.
 
-## Phase 4
+### Phase 4 — Reflection Engine
 
-Personal Wisdom Operating System
+Context-aware reminders and resurfacing.
 
-## Long-Term Vision
+### Phase 5 — Personal Wisdom Operating System
 
-Intergenerational Wisdom Network
-
-A future where valuable experiences can outlive memory and continue helping people across years, generations, and communities.
+A lifelong companion that helps people make better decisions using their accumulated experiences.
 
 ---
 
@@ -542,16 +447,16 @@ Anubhav is not being built to compete with note-taking applications.
 
 It is being built to answer a different question:
 
-> How can people preserve wisdom gained through experience?
+> **How can people preserve wisdom gained through experience?**
 
-Every future feature must improve one or more of the following:
+Every feature should improve at least one of:
 
 * Capture
 * Preservation
 * Retrieval
 * Application
 
-If a feature does not contribute to these goals, it should be reconsidered.
+If a feature does not strengthen these pillars, it should be reconsidered.
 
 ---
 
@@ -559,4 +464,4 @@ If a feature does not contribute to these goals, it should be reconsidered.
 
 **Raghavendra Singh**
 
-Building systems that help people remember what matters.
+*Building systems that help people remember what matters.*
