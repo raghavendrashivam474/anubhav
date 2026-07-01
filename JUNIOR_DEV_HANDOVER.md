@@ -2,106 +2,84 @@
 
 # Junior Developer Handover Document
 
-Version: 3.0
+**Version:** 4.0
 
-Prepared By:
+**Prepared By:**
 Raghavendra Singh
 
-Project Status:
+**Project Status:**
 Pre-MVP
 
-Current Milestone:
-Search Complete
+**Current Milestone:**
+Embedding Generation Complete
 
-Audience:
+**Audience:**
 Incoming Junior Developer
 
-Purpose:
-This document provides everything required for a new developer to continue development without requiring direct guidance from the founder.
+**Purpose:**
+This document enables any incoming developer to continue implementation with minimal onboarding time while preserving the project's architecture, engineering practices, and product direction.
 
 ---
 
 # 1. Project Overview
 
-Anubhav is a Personal Wisdom Preservation System.
+Anubhav is a **Personal Wisdom Preservation System**.
 
-The platform helps users:
+Unlike traditional note-taking or journaling applications, Anubhav focuses on helping users preserve valuable life experiences and transform them into retrievable wisdom.
+
+The platform enables users to:
 
 * Capture experiences
-* Extract lessons
-* Preserve wisdom
-* Retrieve insights later
+* Extract structured lessons using AI
+* Generate summaries and tags
+* Preserve knowledge
+* Retrieve relevant wisdom through keyword and semantic search
 
-Core Mission:
+## Core Mission
 
-Capture experiences today.
-Retrieve wisdom tomorrow.
+> **Capture experiences today. Retrieve wisdom tomorrow.**
 
-The project is NOT:
+The project is **NOT**:
 
-* A notes app
-* A journaling app
-* A social network
+* A notes application
+* A journaling application
 * A productivity platform
+* A social network
 
-The project IS:
+The project **IS**:
 
-A system for preserving and retrieving valuable life lessons.
-
----
-
-# 2. Current Project State
-
-## Product Status
-
-Product Definition:
-✅ Complete
-
-MVP Scope:
-✅ Complete
-
-User Personas:
-✅ Complete
-
-Product Documentation:
-✅ Complete
+A system for preserving, organizing, and retrieving valuable life lessons.
 
 ---
 
-## Backend Status
+# 2. Current Project Status
 
-Infrastructure:
-✅ Complete
+## Product
 
-Database:
-✅ Complete
+| Area                  | Status     |
+| --------------------- | ---------- |
+| Product Definition    | ✅ Complete |
+| MVP Scope             | ✅ Complete |
+| User Personas         | ✅ Complete |
+| Product Documentation | ✅ Complete |
 
-Authentication:
-✅ Complete
+---
 
-CRUD:
-✅ Complete
+## Backend
 
-Search:
-✅ Complete
-
-AI Extraction:
-🚧 Next
-
-Embeddings:
-⏳ Pending
-
-Semantic Search:
-⏳ Pending
-
-Reminders:
-⏳ Pending
-
-Frontend:
-⏳ Pending
-
-Deployment:
-⏳ Pending
+| Module               | Status         |
+| -------------------- | -------------- |
+| Infrastructure       | ✅ Complete     |
+| Database             | ✅ Complete     |
+| Authentication       | ✅ Complete     |
+| CRUD                 | ✅ Complete     |
+| Keyword Search       | ✅ Complete     |
+| AI Lesson Extraction | ✅ Complete     |
+| Embedding Generation | ✅ Complete     |
+| Semantic Search      | 🚧 Next Sprint |
+| Reminder System      | ⏳ Pending      |
+| Frontend             | ⏳ Pending      |
+| Deployment           | ⏳ Pending      |
 
 ---
 
@@ -109,83 +87,89 @@ Deployment:
 
 ## Infrastructure
 
-Configured:
+Configured and verified:
 
 * Docker
-* PostgreSQL
+* PostgreSQL 16
 * pgvector
 * Turborepo
 
-Environment starts successfully.
+Development environment is stable.
 
 ---
 
 ## Database
 
-Tables:
+Current tables:
 
 * users
 * anubhavs
 * tags
 * anubhav_tags
 * reminders
+* alembic_version
 
-All migrations are managed through Alembic.
+All schema changes are managed through Alembic migrations.
+
+Current embedding column:
+
+```text
+Vector(384)
+```
 
 ---
 
 ## Authentication
 
-Authentication provider:
+Provider:
 
-Clerk
+**Clerk**
 
 Implemented:
 
 * JWT verification
 * JWKS validation
 * User auto-provisioning
-* Protected routes
+* Protected endpoints
+* `/auth/me`
 
-Reference endpoint:
-
-GET /auth/me
-
-Authentication is working correctly.
+Authentication is considered stable.
 
 ---
 
 ## CRUD
 
-Implemented Endpoints:
+Implemented endpoints:
 
-* POST /anubhavs
-* GET /anubhavs
-* GET /anubhavs/{id}
-* PATCH /anubhavs/{id}
-* DELETE /anubhavs/{id}
+* POST `/anubhavs`
+* GET `/anubhavs`
+* GET `/anubhavs/{id}`
+* PATCH `/anubhavs/{id}`
+* DELETE `/anubhavs/{id}`
 
-Verified:
+Verified features:
 
-* User ownership
+* Ownership validation
 * Pagination
 * Category filtering
 * Tag normalization
 * Cascade delete
+* User-scoped access
 
-CRUD is considered stable.
+CRUD is production-ready for MVP.
 
 ---
 
 ## Search
 
-Implemented Endpoint:
+Endpoint:
 
+```text
 GET /anubhavs/search
+```
 
-Verified Features:
+Features:
 
-* User-scoped search
 * Keyword search
 * Tag search
 * Category filtering
@@ -194,9 +178,53 @@ Verified Features:
 
 Validation:
 
-10/10 search test cases passed.
+* 10/10 documented test cases passed.
 
-Search is considered stable.
+Search is considered complete.
+
+---
+
+## AI Lesson Extraction
+
+Endpoint:
+
+```text
+POST /anubhavs/{id}/extract
+```
+
+Implemented:
+
+* Groq integration
+* Structured JSON extraction
+* Lesson generation
+* Summary generation
+* Automatic tag generation
+* Provider abstraction
+* Re-extraction protection (409 Conflict)
+* Graceful error handling
+
+Extraction is complete and stable.
+
+---
+
+## Embedding Generation
+
+Implemented:
+
+* Local embedding model (`sentence-transformers`)
+* `all-MiniLM-L6-v2`
+* Automatic execution after successful extraction
+* Provider-agnostic embedding service
+* Automatic persistence to PostgreSQL
+* Existing record backfill support
+
+Current embedding dimension:
+
+```text
+384
+```
+
+Embedding generation is complete.
 
 ---
 
@@ -204,388 +232,330 @@ Search is considered stable.
 
 Primary Entity:
 
-Anubhav
+**Anubhav**
 
-Fields:
+Important fields:
 
 * id
-* title
-* situation
-* observation
+* what_happened
 * lesson
-* advice_to_future_self
+* summary
+* advice
 * category
 * source
-* embedding
+* embedding (Vector 384)
 * user_id
 * created_at
 * updated_at
 
 Relationships:
 
-User → Many Anubhavs
-
-Anubhav → Many Tags
-
-Anubhav → Many Reminders
+* User → Many Anubhavs
+* Anubhav → Many Tags
+* Anubhav → Many Reminders
 
 Do not modify the schema without approval.
 
 ---
 
-# 5. Important Engineering Rules
+# 5. Engineering Rules
 
-Rule 1
+### Rule 1
 
 Every protected endpoint must use:
 
+```python
 Depends(get_current_user)
-
-No exceptions.
+```
 
 ---
 
-Rule 2
+### Rule 2
 
-Every query must be scoped to:
+Every database query must be scoped to:
 
+```python
 current_user.id
+```
 
-Users must never access another user's data.
+Never expose another user's data.
 
 ---
 
-Rule 3
+### Rule 3
 
 Ownership violations return:
 
+```text
 404
+```
 
-Not:
-
-403
+Never return `403`.
 
 This prevents resource enumeration.
 
 ---
 
-Rule 4
+### Rule 4
 
-Keep architecture consistent:
+Maintain architecture:
 
+```text
 Router
-↓
+   ↓
 Service
-↓
+   ↓
 Model
+```
 
-Business logic belongs in services.
+Business logic belongs only inside services.
 
 ---
 
-Rule 5
+### Rule 5
 
-Avoid unnecessary dependencies.
+AI providers must remain replaceable.
 
-Prefer existing project patterns.
+Routers and business logic must never depend directly on Groq or the embedding library.
+
+---
+
+### Rule 6
+
+Failures in optional AI components must never prevent the primary workflow from succeeding.
+
+Graceful degradation is preferred over rollback.
 
 ---
 
 # 6. Current Sprint Goal
 
-AI Lesson Extraction
+## Semantic Search
 
-Status:
+Implement semantic retrieval using stored pgvector embeddings.
 
-Planning complete.
+Current database already contains embeddings for all extracted Anubhavs.
 
-Implementation begins next development session.
-
----
-
-# 7. AI Lesson Extraction
-
-Objective:
-
-Convert raw experiences into structured wisdom.
-
-Recommended Endpoint:
-
-POST /anubhavs/{id}/extract
-
-Authentication:
-
-Required
-
-Ownership:
-
-Required
-
-Expected Output:
-
-{
-"lesson": "...",
-"summary": "...",
-"tags": ["...", "..."]
-}
-
-Example:
-
-Input:
-
-"I kept delaying opportunities because I never felt ready."
-
-Expected Output:
-
-Lesson:
-Action creates confidence.
-
-Summary:
-Waiting for certainty often delays growth.
-
-Tags:
-
-* growth
-* confidence
-* career
-
-Implementation:
-
-OpenAI structured outputs.
-
-Store:
-
-* lesson
-* summary
-* tags
-
-inside the database.
+No additional schema changes are expected.
 
 ---
 
-# 8. After AI Extraction
+# 7. Semantic Search Requirements
 
-Implement Embeddings.
+Proposed endpoint:
 
-Model:
+```text
+GET /anubhavs/semantic-search?q=...
+```
 
-text-embedding-3-small
+Workflow:
 
-Dimensions:
+```text
+User Query
+        ↓
+Generate Query Embedding
+        ↓
+Cosine Similarity Search
+        ↓
+Rank Results
+        ↓
+Return Most Relevant Anubhavs
+```
 
-1536
+Requirements:
 
-Store in:
+* User-scoped
+* Cosine similarity
+* Ranking by similarity score
+* Pagination
+* Graceful error handling
 
-anubhavs.embedding
+Do not replace keyword search.
 
-Future semantic search depends on this.
-
----
-
-# 9. After Embeddings
-
-Implement Semantic Search.
-
-Goal:
-
-Search by meaning rather than exact words.
-
-Example:
-
-Query:
-
-confidence
-
-Should retrieve:
-
-* action
-* risk-taking
-* growth
-
-Even when exact keywords are absent.
+Semantic search should exist alongside keyword search.
 
 ---
 
-# 10. Reminder System
+# 8. Reminder System
 
-Users can schedule reminders:
+After semantic search, implement reminders.
+
+Reminder intervals:
 
 * 30 Days
 * 6 Months
 * 1 Year
 
-Reminder fields:
-
-* user_id
-* anubhav_id
-* trigger_at
-* status
-
-Email delivery can initially be mocked.
+Email delivery may initially be mocked.
 
 ---
 
-# 11. Frontend Requirements
+# 9. Frontend Requirements
 
-Pages Needed:
+Planned pages:
 
 * Authentication
 * Dashboard
 * Create Anubhav
 * Timeline
 * Search
+* Semantic Search
 * Settings
 
 Priority:
 
 Functionality first.
 
-Visual polish later.
+Visual refinement later.
 
 ---
 
-# 12. MVP Completion Criteria
+# 10. MVP Completion Criteria
 
-A user must be able to:
+A user should be able to:
 
-1. Login
-2. Create Anubhav
-3. Edit Anubhav
-4. Delete Anubhav
-5. Search Anubhav
-6. Receive AI-generated lessons
-7. Set reminders
-8. View timeline
+1. Authenticate
+2. Capture an experience
+3. Edit experiences
+4. Delete experiences
+5. Search by keyword
+6. Search semantically
+7. Receive AI-generated lessons
+8. Generate embeddings automatically
+9. Set reminders
+10. Browse a timeline
 
-When all eight are working:
-
-MVP is complete.
+Once these capabilities are complete, the backend MVP is feature-complete.
 
 ---
 
-# 13. Validation Goals
+# 11. Validation Goals
 
-Do not build advanced features until:
+Do **not** expand scope until the product demonstrates usage.
+
+Target:
 
 * 50 Users
-* 20 Entries Per User
-* 1000 Total Entries
+* 20 Entries per User
+* 1000 Total Anubhavs
 
-are achieved.
+Only after reaching this milestone should advanced AI features be considered.
 
 ---
 
-# 14. Explicitly Out of Scope
+# 12. Explicitly Out of Scope
 
-Do NOT build:
+Do not implement:
 
 * Social Feed
 * Likes
-* Followers
 * Comments
+* Followers
 * Community Features
-* AI Agents
+* Multi-Agent Systems
 * Voice Assistant
-* Recommendation Feed
 * Enterprise Features
+* Recommendation Feed
 
 These are intentionally deferred.
 
 ---
 
-# 15. Known Lessons Learned
+# 13. Engineering Lessons Learned
 
-Lesson #1
+### Lesson 1
 
-Verify infrastructure before debugging application code.
-
-Incident:
-
-POST /anubhavs returned 500.
-
-Root Cause:
-
-PostgreSQL container stopped.
-
-Resolution:
-
-Restarted container.
+Always verify infrastructure before debugging application code.
 
 ---
 
-Lesson #2
+### Lesson 2
 
-Authentication errors may indicate service identity problems rather than credential issues.
-
-Incident:
-
-password authentication failed for user "anubhav"
-
-Root Cause:
-
-Native Windows PostgreSQL service intercepted localhost:5432 connections.
-
-Resolution:
-
-Docker PostgreSQL moved to localhost:5433.
+Authentication failures may indicate service identity problems rather than invalid credentials.
 
 ---
 
-# 16. Success Definition
+### Lesson 3
 
-Success is not:
+Do not rely on Alembic autogeneration for pgvector dimension changes.
+
+Write vector migrations manually.
+
+---
+
+### Lesson 4
+
+Async FastAPI applications should never execute synchronous SDK calls directly.
+
+Wrap synchronous work in a thread executor.
+
+---
+
+### Lesson 5
+
+Keep AI providers interchangeable.
+
+Business logic should depend on service abstractions, not vendor SDKs.
+
+---
+
+### Lesson 6
+
+Historical data must be migrated whenever new derived fields (such as embeddings) are introduced.
+
+Backfill is part of the implementation—not an afterthought.
+
+---
+
+# 14. Success Definition
+
+Success is **not** measured by:
 
 * More code
 * More features
-* More complexity
+* More AI
 
-Success is:
+Success is measured by one outcome:
 
 A user captures an experience.
 
-The lesson is preserved.
+The system preserves its wisdom.
 
-The lesson is retrieved later.
+The system resurfaces that wisdom at the right time.
 
-The user benefits from that experience.
+The user makes a better decision because of it.
 
-That is the outcome the project is optimizing for.
+Everything in Anubhav exists to support that outcome.
 
 ---
 
-# 17. Immediate Assignment
+# 15. Immediate Assignment
 
 Priority 1
 
-Implement AI Lesson Extraction.
+Implement Semantic Search.
 
 Priority 2
 
-Implement Embeddings.
+Implement Reminder System.
 
 Priority 3
 
-Implement Semantic Search.
+Develop the Next.js frontend.
 
 Priority 4
 
-Implement Reminders.
+Deploy the MVP.
 
 Priority 5
 
-Build Frontend.
+Begin user validation.
 
-Priority 6
+Before implementing any feature:
 
-Deploy MVP.
-
-Follow existing patterns.
-
-Avoid scope creep.
-
-Keep implementation simple.
-
-When uncertain:
-
-Read README.md first.
+1. Read `README.md`.
+2. Follow existing architectural patterns.
+3. Avoid unnecessary dependencies.
+4. Preserve provider-agnostic design.
+5. Keep implementation simple.
+6. Prevent scope creep.

@@ -2,13 +2,13 @@
 
 > **Preserve experiences today. Retrieve wisdom tomorrow.**
 
-Anubhav is a Personal Wisdom Preservation System that helps people capture experiences, preserve life lessons, and retrieve meaningful wisdom when it becomes relevant.
+Anubhav is a **Personal Wisdom Preservation System** designed to help people capture experiences, preserve life lessons, and retrieve meaningful wisdom when it becomes relevant.
 
 Modern software excels at storing information.
 
 **Anubhav is designed to preserve wisdom.**
 
-It transforms raw experiences into structured, searchable, and retrievable knowledge, enabling people to benefit from lessons they've already earned instead of repeatedly paying the cost of relearning them.
+Rather than acting as another note-taking application, Anubhav transforms life experiences into structured, AI-enriched knowledge that can be searched, understood, and resurfaced when it matters most.
 
 ---
 
@@ -47,9 +47,10 @@ Anubhav enables users to:
 
 * Capture experiences quickly
 * Extract meaningful lessons using AI
+* Generate structured summaries
 * Organize wisdom intelligently
 * Preserve insights for the long term
-* Retrieve relevant lessons when needed
+* Retrieve relevant lessons through keyword and semantic search
 * Build a personal wisdom archive over time
 
 The goal is simple:
@@ -68,6 +69,8 @@ Capture
 AI Understanding
       ↓
 Structured Wisdom
+      ↓
+Embedding Generation
       ↓
 Preservation
       ↓
@@ -91,11 +94,14 @@ Every feature in Anubhav strengthens this loop.
 * AI Lesson Extraction
 * AI Summary Generation
 * AI Tag Generation
+* Automatic Embedding Generation
+
+## In Progress
+
+* Semantic Search
 
 ## Planned
 
-* Vector Embeddings
-* Semantic Search
 * Reminder System
 * Timeline View
 * Wisdom Recommendations
@@ -138,13 +144,21 @@ These features are intentionally deferred until user behavior validates the core
 * Docker
 * Turborepo
 
-## AI
+## Artificial Intelligence
 
-* Groq API (current implementation)
-* Provider-agnostic AI service architecture
-* Structured JSON extraction
-* Future embedding generation
-* Semantic retrieval pipeline
+### Extraction
+
+* Groq API
+* Structured JSON Responses
+* Provider-agnostic extraction service
+
+### Embeddings
+
+* sentence-transformers
+* all-MiniLM-L6-v2
+* Local inference
+* 384-dimensional embeddings
+* Provider-agnostic embedding service
 
 ---
 
@@ -158,7 +172,7 @@ These features are intentionally deferred until user behavior validates the core
 
 Validate one fundamental question:
 
-> **Will people consistently capture experiences and revisit them when making future decisions?**
+> **Will people consistently preserve experiences and revisit them when making future decisions?**
 
 ## Validation Goal
 
@@ -178,6 +192,7 @@ Advanced AI capabilities will only be expanded after this milestone.
 4. Privacy is non-negotiable.
 5. Reflection over engagement.
 6. Validate user behavior before building sophisticated AI.
+7. Keep AI providers replaceable.
 
 ---
 
@@ -216,6 +231,7 @@ Advanced AI capabilities will only be expanded after this milestone.
 * Alembic migrations
 * Version-controlled schema
 * pgvector extension
+* Vector migration (1536 → 384 dimensions)
 
 Tables:
 
@@ -258,7 +274,6 @@ Features:
 
 Implemented and validated:
 
-* GET `/anubhavs/search`
 * Keyword search
 * Tag search
 * Category filtering
@@ -267,78 +282,93 @@ Implemented and validated:
 
 Validation:
 
-* 10/10 search test cases passed
+* 10/10 test cases passed
+* User scoping verified
 * Unauthorized access verified
 * Pagination verified
-* Tag-only matches verified
-* Category filtering verified
+* Tag-only matching verified
 
 ### AI Lesson Extraction
 
 Implemented:
 
-* POST `/anubhavs/{id}/extract`
-* Provider-agnostic AI service layer
-* Structured JSON extraction
-* Lesson generation
-* Summary generation
+* Structured lesson generation
+* AI summaries
 * Automatic tag generation
-* Ownership verification
 * Re-extraction protection
-* Database persistence
+* Provider abstraction
+* Graceful failure handling
 
-Validation:
+### Embedding Generation
 
-* AI extraction verified
-* Re-extraction returns 409 Conflict
-* Unauthorized requests rejected
-* Invalid IDs handled correctly
+Implemented:
+
+* Local embedding generation
+* Automatic execution after extraction
+* sentence-transformers integration
+* all-MiniLM-L6-v2 model
+* Vector(384) storage
+* Automatic persistence
+* Backfill support for existing records
+* Graceful degradation if embedding generation fails
 
 ---
 
 # 🚧 Current Sprint
 
-## Embedding Generation
+## Semantic Search
 
 Goal:
 
-Generate vector embeddings for every structured Anubhav and store them in PostgreSQL using pgvector.
+Retrieve relevant experiences based on semantic similarity instead of exact keyword matching.
 
-This forms the foundation for semantic retrieval.
+Planned flow:
+
+```text
+User Query
+      ↓
+Generate Query Embedding
+      ↓
+Cosine Similarity (pgvector)
+      ↓
+Rank Results
+      ↓
+Return Most Relevant Wisdom
+```
 
 ---
 
 # ⏭️ Next
 
-1. Embedding Generation
-2. Semantic Search
-3. Reminder System
-4. Next.js Frontend
-5. MVP Deployment
-6. User Validation
+1. Semantic Search
+2. Reminder System
+3. Next.js Frontend
+4. MVP Deployment
+5. User Validation
 
 ---
 
 # 📊 MVP Progress
 
-| Module               | Status     |
-| -------------------- | ---------- |
-| Product Definition   | ✅ Complete |
-| Infrastructure       | ✅ Complete |
-| Database             | ✅ Complete |
-| Authentication       | ✅ Complete |
-| CRUD                 | ✅ Complete |
-| Search               | ✅ Complete |
-| AI Lesson Extraction | ✅ Complete |
-| Embeddings           | 🚧 Next    |
-| Semantic Search      | ⏳ Pending  |
-| Reminders            | ⏳ Pending  |
-| Frontend             | ⏳ Pending  |
-| Deployment           | ⏳ Pending  |
+| Module               | Status         |
+| -------------------- | -------------- |
+| Product Definition   | ✅ Complete     |
+| Infrastructure       | ✅ Complete     |
+| Database             | ✅ Complete     |
+| Authentication       | ✅ Complete     |
+| CRUD                 | ✅ Complete     |
+| Keyword Search       | ✅ Complete     |
+| AI Lesson Extraction | ✅ Complete     |
+| Embedding Generation | ✅ Complete     |
+| Semantic Search      | 🚧 In Progress |
+| Reminder System      | ⏳ Pending      |
+| Frontend             | ⏳ Pending      |
+| Deployment           | ⏳ Pending      |
 
 ### Overall Progress
 
-Approximately **80% of the backend MVP** is complete.
+* **Backend MVP:** ~90% Complete
+* **Overall MVP:** ~80% Complete
 
 Current operational workflow:
 
@@ -349,9 +379,11 @@ Capture Experience
         ↓
 Store
         ↓
-AI Extraction
+AI Lesson Extraction
         ↓
-Search
+Embedding Generation
+        ↓
+Keyword Search
         ↓
 Retrieve
 ```
@@ -362,29 +394,32 @@ Retrieve
 
 ```text
 ┌─────────────────────────────────────────────┐
-│              Next.js Frontend               │
-│                 (Planned)                   │
+│             Next.js Frontend                │
+│               (Planned)                     │
 └──────────────────┬──────────────────────────┘
                    │
              HTTPS + Clerk JWT
-                   │
                    ▼
 ┌─────────────────────────────────────────────┐
-│              FastAPI Backend                │
+│             FastAPI Backend                 │
 │                                             │
 │ Routers → Services → AI → Models            │
-│ Async SQLAlchemy + JWT Verification         │
+│                                             │
+│ • Authentication                            │
+│ • CRUD                                      │
+│ • Search                                    │
+│ • AI Extraction                             │
+│ • Embedding Generation                      │
 └──────────────────┬──────────────────────────┘
-                   │
                    ▼
 ┌─────────────────────────────────────────────┐
-│         PostgreSQL 16 + pgvector            │
+│        PostgreSQL 16 + pgvector             │
 │                                             │
 │ Users                                       │
 │ Anubhavs                                    │
 │ Tags                                        │
 │ Reminders                                   │
-│ Embeddings (vector 1536)                    │
+│ Embeddings (Vector 384)                     │
 └─────────────────────────────────────────────┘
 ```
 
@@ -397,19 +432,19 @@ anubhav/
 ├── apps/
 │   ├── api/
 │   │   ├── app/
-│   │   │   ├── ai/
 │   │   │   ├── core/
 │   │   │   ├── models/
 │   │   │   ├── routers/
 │   │   │   ├── schemas/
-│   │   │   └── services/
+│   │   │   ├── services/
+│   │   │   └── ai/
 │   │   ├── alembic/
 │   │   ├── main.py
 │   │   └── requirements.txt
 │   └── web/
+├── docs/
 ├── infra/
 ├── packages/
-├── docs/
 ├── .env.example
 ├── package.json
 └── README.md
@@ -421,23 +456,23 @@ anubhav/
 
 ### Phase 1 — Experience Vault
 
-Capture, organize, and preserve experiences.
+Capture and preserve experiences.
 
 ### Phase 2 — Wisdom Retrieval
 
-Search and retrieve structured lessons.
+Keyword search and AI-assisted retrieval.
 
 ### Phase 3 — Semantic Intelligence
 
-Meaning-based retrieval through embeddings.
+Meaning-based retrieval using vector embeddings.
 
 ### Phase 4 — Reflection Engine
 
-Context-aware reminders and resurfacing.
+Reminders, resurfacing, and context-aware insights.
 
 ### Phase 5 — Personal Wisdom Operating System
 
-A lifelong companion that helps people make better decisions using their accumulated experiences.
+A lifelong companion that helps people make better decisions using accumulated experiences.
 
 ---
 
@@ -449,14 +484,14 @@ It is being built to answer a different question:
 
 > **How can people preserve wisdom gained through experience?**
 
-Every feature should improve at least one of:
+Every feature should strengthen one or more of these pillars:
 
 * Capture
 * Preservation
 * Retrieval
 * Application
 
-If a feature does not strengthen these pillars, it should be reconsidered.
+If a feature does not improve these pillars, it should be reconsidered.
 
 ---
 
