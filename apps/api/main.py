@@ -2,17 +2,20 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
-from app.routers import auth, anubhav, health  # ← added 'anubhav'
+from app.models.user import User
+from app.models.anubhav import Anubhav
+from app.models.tag import Tag
+from app.models.reminder import Reminder
+from app.routers import auth, anubhav, health
 
 app = FastAPI(
     title=settings.APP_NAME,
     version="0.1.0",
-    description="Anubhav — Capture experiences today. Retrieve wisdom tomorrow.",
 )
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -20,13 +23,9 @@ app.add_middleware(
 
 app.include_router(health.router)
 app.include_router(auth.router)
-app.include_router(anubhav.router)  # ← added
+app.include_router(anubhav.router)
 
 
 @app.get("/")
 async def root():
-    return {
-        "app": settings.APP_NAME,
-        "env": settings.APP_ENV,
-        "message": "Capture experiences today. Retrieve wisdom tomorrow.",
-    }
+    return {"message": "Anubhav API", "version": "0.1.0"}

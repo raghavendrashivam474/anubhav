@@ -10,6 +10,7 @@ from app.models.anubhav import Anubhav
 from app.models.anubhav import anubhav_tags
 from app.models.tag import Tag
 from app.core.config import settings
+from app.services.embedding_service import generate_embedding
 
 logger = logging.getLogger(__name__)
 
@@ -111,7 +112,7 @@ async def extract_wisdom(
     category = anubhav.category
     source = anubhav.source
 
-    # Call Groq in thread executor to avoid blocking async loop
+    # Call Groq in thread executor
     try:
         loop = asyncio.get_event_loop()
         raw_content = await loop.run_in_executor(
@@ -140,7 +141,7 @@ async def extract_wisdom(
         logger.error(f"Extraction validation failed: {error_msg}")
         return {"error": "invalid_response", "message": f"AI response validation failed: {error_msg}"}
 
-    # Persist to database
+    # Persist lesson, summary and tags to database
     try:
         anubhav.lesson = extracted["lesson"].strip()
         anubhav.summary = extracted["summary"].strip()
@@ -163,7 +164,6 @@ async def extract_wisdom(
                 db.add(tag)
                 await db.flush()
 
-            # Insert into association table directly
             await db.execute(
                 anubhav_tags.insert().values(
                     anubhav_id=anubhav.id,
@@ -179,10 +179,31 @@ async def extract_wisdom(
         logger.error(f"Database error during extraction: {e}")
         return {"error": "db_failure", "message": "Failed to save extraction results"}
 
+    # Generate embedding — graceful degradation if it fails
+    embedding_stored = False
+    try:
+        embedding_text = f"{anubhav.lesson} {anubhav.summary}"
+        embedding_vector = await generate_embedding(embedding_text)
+
+        # Update embedding in database
+        result = await db.execute(
+            select(Anubhav).where(Anubhav.id == anubhav.id)
+        )
+        anubhav_for_embedding = result.scalar_one()
+        anubhav_for_embedding.embedding = embedding_vector
+        await db.commit()
+        embedding_stored = True
+        logger.info(f"Embedding stored for Anubhav {anubhav_id}")
+
+    except Exception as e:
+        logger.error(f"Embedding generation failed for {anubhav_id}: {e}")
+        # Do not fail the request — extraction already succeeded
+
     return {
         "success": True,
         "anubhav_id": str(anubhav.id),
         "lesson": anubhav.lesson,
         "summary": anubhav.summary,
-        "tags": new_tag_names
+        "tags": new_tag_names,
+        "embedding_stored": embedding_stored
     }

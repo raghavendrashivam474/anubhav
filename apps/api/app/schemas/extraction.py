@@ -14,3 +14,4 @@ class ExtractionResponse(BaseModel):
     lesson: str
     summary: str
     tags: List[str]
+    embedding_stored: bool = False

@@ -84,8 +84,10 @@ class Anubhav(Base):
     )
 
     # AI embedding — 1536 dims = OpenAI text-embedding-3-small
+    # AI embedding — 384 dims = all-MiniLM-L6-v2 (sentence-transformers)
+    # AI embedding — 384 dims = all-MiniLM-L6-v2 (sentence-transformers)
     embedding: Mapped[list[float] | None] = mapped_column(
-        Vector(1536), nullable=True
+        Vector(384), nullable=True
     )
 
     # Timestamps
@@ -109,4 +111,4 @@ class Anubhav(Base):
     )
 
     def __repr__(self) -> str:
-        return f"<Anubhav {self.id} ({self.category.value})>"   
+        return f"<Anubhav {self.id} ({self.category.value})>"

@@ -20,6 +20,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.core.database import get_db
+# Import all models to ensure SQLAlchemy mapper is fully configured
+from app.models.anubhav import Anubhav  # noqa: F401
+from app.models.tag import Tag  # noqa: F401
+from app.models.reminder import Reminder  # noqa: F401
+
 from app.models.user import User
 
 
