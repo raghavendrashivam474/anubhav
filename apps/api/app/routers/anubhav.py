@@ -24,6 +24,8 @@ from app.schemas.anubhav import (
 from app.schemas.extraction import ExtractionResponse
 from app.services import anubhav_service
 from app.services.extraction_service import extract_wisdom
+from app.schemas.semantic_search import SemanticSearchResponse
+from app.services.semantic_search_service import semantic_search
 
 
 router = APIRouter(prefix="/anubhavs", tags=["Anubhavs"])
@@ -99,6 +101,52 @@ async def search_my_anubhavs(
         db, user, query=q, page=page, page_size=page_size, category=category
     )
     return AnubhavList(items=items, total=total, page=page, page_size=page_size)
+
+# ──────────────────────────────────────────────────────────
+# SEMANTIC SEARCH
+# ⚠️ Must be declared BEFORE /{anubhav_id} routes.
+# ──────────────────────────────────────────────────────────
+
+@router.get(
+    "/semantic-search",
+    response_model=SemanticSearchResponse,
+    summary="Search my Anubhavs by meaning using AI embeddings",
+)
+async def semantic_search_anubhavs(
+    q: str = Query(..., min_length=1, max_length=200, description="Search query"),
+    page: int = Query(1, ge=1),
+    page_size: int = Query(20, ge=1, le=100),
+    category: Category | None = Query(None, description="Filter by category"),
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(get_current_user),
+):
+    """
+    Semantic search using vector similarity.
+    Returns experiences ranked by meaning, not exact keyword match.
+    """
+    try:
+        items, total = await semantic_search(
+            db=db,
+            user=user,
+            query=q,
+            page=page,
+            page_size=page_size,
+            category=category,
+        )
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=500,
+            detail=f"Semantic search failed: {type(e).__name__}: {str(e)}"
+        )
+
+    return SemanticSearchResponse(
+        items=items,
+        total=total,
+        page=page,
+        page_size=page_size
+    )
 
 
 # ──────────────────────────────────────────────────────────
