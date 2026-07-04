@@ -1,4 +1,4 @@
-import asyncio
+﻿import asyncio
 import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -18,11 +18,9 @@ logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Start scheduler on startup
     logger.info("Starting reminder scheduler...")
     scheduler_task = asyncio.create_task(run_scheduler())
     yield
-    # Cancel scheduler on shutdown
     scheduler_task.cancel()
     try:
         await scheduler_task

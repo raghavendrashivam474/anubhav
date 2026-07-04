@@ -1,4 +1,4 @@
-import uuid
+﻿import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING
 
@@ -23,9 +23,7 @@ class User(Base):
         String(255), unique=True, nullable=False, index=True
     )
     name: Mapped[str | None] = mapped_column(String(255), nullable=True)
-    clerk_user_id: Mapped[str | None] = mapped_column(
-        String(255), unique=True, nullable=True, index=True
-    )
+    password_hash: Mapped[str | None] = mapped_column(String(255), nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=datetime.utcnow, nullable=False
     )

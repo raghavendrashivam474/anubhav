@@ -1,4 +1,4 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
+﻿from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -15,10 +15,10 @@ class Settings(BaseSettings):
     # Database
     DATABASE_URL: str
 
-    # Clerk Auth
-    CLERK_SECRET_KEY: str
-    CLERK_ISSUER: str
-    CLERK_JWKS_URL: str
+    # JWT
+    JWT_SECRET_KEY: str = "anubhav-dev-secret-change-in-production"
+    JWT_ALGORITHM: str = "HS256"
+    JWT_EXPIRE_MINUTES: int = 1440
 
     # Groq
     GROQ_API_KEY: str
