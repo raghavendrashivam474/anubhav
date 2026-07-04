@@ -50,3 +50,6 @@ apps/api/**/__pycache__
 apps/api/**/*.pyc
 
 apps/api/backfill_embeddings.py
+
+apps/api/body.json
+apps/api/update.json
