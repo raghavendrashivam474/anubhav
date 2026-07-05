@@ -1,4 +1,4 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
@@ -127,4 +127,13 @@
   html {
     @apply font-sans;
   }
+}
+
+@keyframes ocean-drift {
+  0%, 100% { transform: translate(0, 0); opacity: 0.3; }
+  50% { transform: translate(-20px, -10px); opacity: 0.4; }
+}
+
+.animate-ocean-drift {
+  animation: ocean-drift 20s ease-in-out infinite;
 }

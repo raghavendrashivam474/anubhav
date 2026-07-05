@@ -4,10 +4,11 @@ import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { useAuth } from "@/hooks/useAuth"
 import { setAuthToken } from "@/services/api"
-import { Home, BookOpen, Search, Clock, Bell, Settings, LogOut } from "lucide-react"
+import { Home, BookOpen, Search, Clock, Bell, Settings, LogOut, Globe } from "lucide-react"
 
 const navItems = [
   { href: "/wisdom-space", label: "Wisdom Space", icon: Home },
+  { href: "/world", label: "My World", icon: Globe },
   { href: "/experiences", label: "My Experiences", icon: BookOpen },
   { href: "/search", label: "Search", icon: Search },
   { href: "/journey", label: "My Journey", icon: Clock },
