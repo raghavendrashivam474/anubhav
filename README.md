@@ -2,13 +2,13 @@
 
 > **Preserve experiences today. Retrieve wisdom tomorrow.**
 
-Anubhav is a **Personal Wisdom Preservation System** designed to help people capture experiences, preserve life lessons, and retrieve meaningful wisdom when it becomes relevant.
+Anubhav is a **Personal Wisdom Preservation System** that helps people transform life experiences into structured, searchable, and interconnected wisdom.
 
-Modern software excels at storing information.
+Modern software is excellent at storing information.
 
-**Anubhav is designed to preserve wisdom.**
+**Anubhav is built to preserve wisdom.**
 
-Rather than acting as another note-taking application, Anubhav transforms life experiences into structured, AI-enriched knowledge that can be searched, understood, and resurfaced when it matters most.
+Instead of becoming another note-taking or journaling application, Anubhav captures experiences, extracts lessons using AI, discovers relationships between them, and resurfaces the right wisdom when it becomes relevant.
 
 ---
 
@@ -16,26 +16,26 @@ Rather than acting as another note-taking application, Anubhav transforms life e
 
 Every person accumulates valuable experiences throughout life.
 
-* A failed interview
-* A difficult relationship
-* A startup mistake
-* Advice from a mentor
-* An important realization
+- A failed interview
+- A difficult relationship
+- A startup mistake
+- Advice from a mentor
+- An important realization
 
-These experiences often contain lessons that required significant time, effort, failure, or emotional cost to acquire.
+These experiences often contain lessons that required significant time, effort, sacrifice, failure, or emotional cost to acquire.
 
-Yet most of them disappear.
+Yet most disappear.
 
 Not because they lack value.
 
 Because they are forgotten.
 
-As a result, people frequently:
+As a result, people repeatedly:
 
-* Repeat mistakes
-* Forget important lessons
-* Lose valuable insights
-* Miss opportunities to learn from their own experiences
+- Repeat mistakes
+- Forget valuable lessons
+- Lose hard-earned insights
+- Miss opportunities to learn from themselves
 
 Anubhav exists to solve this problem.
 
@@ -45,13 +45,14 @@ Anubhav exists to solve this problem.
 
 Anubhav enables users to:
 
-* Capture experiences quickly
-* Extract meaningful lessons using AI
-* Generate structured summaries
-* Organize wisdom intelligently
-* Preserve insights for the long term
-* Retrieve relevant lessons through keyword and semantic search
-* Build a personal wisdom archive over time
+- Capture experiences effortlessly
+- Extract lessons using AI
+- Generate structured summaries
+- Automatically organize knowledge
+- Preserve wisdom long-term
+- Search through keyword and semantic understanding
+- Visualize relationships between experiences
+- Explore wisdom inside an interactive world
 
 The goal is simple:
 
@@ -72,6 +73,8 @@ Structured Wisdom
       ↓
 Embedding Generation
       ↓
+Relationship Discovery
+      ↓
 Preservation
       ↓
 Retrieval
@@ -83,82 +86,85 @@ Every feature in Anubhav strengthens this loop.
 
 ---
 
-# 🚀 MVP Features
-
-## Implemented
-
-* Authentication
-* Create, Edit & Delete Anubhavs
-* Categories & Tags
-* Keyword Search
-* AI Lesson Extraction
-* AI Summary Generation
-* AI Tag Generation
-* Automatic Embedding Generation
-
-## In Progress
-
-* Semantic Search
-
-## Planned
-
-* Reminder System
-* Timeline View
-* Wisdom Recommendations
-* Context-Aware Retrieval
-
-## Explicitly Out of Scope
-
-* Social Feed
-* Community Platform
-* Multi-Agent Systems
-* Voice Companion
-* Enterprise Features
-
-These features are intentionally deferred until user behavior validates the core product loop.
-
----
-
-# 🏗️ Technology Stack
-
-## Frontend
-
-* Next.js
-* TypeScript
-* Tailwind CSS
-* shadcn/ui
+# 🚀 Current MVP Features
 
 ## Backend
 
-* FastAPI
-* SQLAlchemy 2.0
-* Pydantic v2
+- Authentication
+- CRUD Operations
+- Categories & Tags
+- Keyword Search
+- Semantic Search
+- AI Lesson Extraction
+- AI Summary Generation
+- AI Tag Generation
+- Automatic Embedding Generation
+- Reminder System
+- Wisdom Relationship Graph
+
+## Frontend
+
+- Landing Page
+- Authentication
+- Wisdom Space Dashboard
+- Experiences
+- Search
+- Journey
+- Reflections
+- Settings
+- Interactive Wisdom World
+
+## AI
+
+- Structured lesson extraction
+- Summary generation
+- Automatic tagging
+- Local embedding generation
+- Semantic retrieval
+- Relationship discovery
+
+---
+
+# 🏗 Technology Stack
+
+## Frontend
+
+- Next.js
+- TypeScript
+- Tailwind CSS
+- shadcn/ui
+
+## Backend
+
+- FastAPI
+- SQLAlchemy 2.0
+- AsyncPG
+- Pydantic v2
 
 ## Database
 
-* PostgreSQL 16
-* pgvector
+- PostgreSQL 16
+- pgvector
 
 ## Infrastructure
 
-* Docker
-* Turborepo
+- Docker
+- Turborepo
 
 ## Artificial Intelligence
 
-### Extraction
+### Wisdom Extraction
 
-* Groq API
-* Structured JSON Responses
-* Provider-agnostic extraction service
+- Groq API
+- Structured JSON Outputs
+- Provider-agnostic architecture
 
 ### Embeddings
 
-* sentence-transformers
-* all-MiniLM-L6-v2
-* Local inference
-* 384-dimensional embeddings
-* Provider-agnostic embedding service
+- sentence-transformers
+- all-MiniLM-L6-v2
+- Local inference
+- 384-dimensional vectors
 
 ---
 
@@ -166,211 +172,161 @@ These features are intentionally deferred until user behavior validates the core
 
 ## Current Stage
 
-**Pre-MVP**
+**Feature-Complete MVP**
 
-## Current Focus
+Current focus:
 
-Validate one fundamental question:
+- Deployment
+- Performance optimization
+- User validation
+- Product refinement
 
-> **Will people consistently preserve experiences and revisit them when making future decisions?**
+Validation Goal:
 
-## Validation Goal
-
-* 50 Users
-* 20 Entries Per User
-* 1000 Total Anubhavs
-
-Advanced AI capabilities will only be expanded after this milestone.
+- 50 Users
+- 20 Experiences per User
+- 1000 Total Experiences
 
 ---
 
 # 🎯 Product Principles
 
 1. Capture should be effortless.
-2. Retrieval is more important than storage.
-3. Wisdom is more valuable than volume.
+2. Retrieval matters more than storage.
+3. Wisdom is more valuable than information.
 4. Privacy is non-negotiable.
 5. Reflection over engagement.
-6. Validate user behavior before building sophisticated AI.
-7. Keep AI providers replaceable.
+6. Validate behavior before sophistication.
+7. AI providers must remain replaceable.
+8. Architecture should evolve without rewrites.
 
 ---
 
 # 📈 Build Progress
 
-## ✅ Completed
+## ✅ Product
 
-### Product
+- Product vision
+- MVP definition
+- Validation strategy
+- User personas
+- Product documentation
 
-* Product vision finalized
-* MVP scope finalized
-* User personas defined
-* Validation strategy documented
-* Product principles documented
+---
 
-### Infrastructure
+## ✅ Infrastructure
 
-* Turborepo monorepo
-* Docker development environment
-* PostgreSQL 16
-* pgvector
-* Local development environment
+- Docker
+- Turborepo
+- PostgreSQL
+- pgvector
+- Local development environment
 
-### Backend Foundation
+---
 
-* FastAPI
-* Async SQLAlchemy
-* AsyncPG
-* Dependency Injection
-* Pydantic Settings
-* Swagger/OpenAPI
-* Health endpoint (`/health`)
+## ✅ Backend
 
-### Database
+### Foundation
 
-* Alembic migrations
-* Version-controlled schema
-* pgvector extension
-* Vector migration (1536 → 384 dimensions)
-
-Tables:
-
-* users
-* anubhavs
-* tags
-* anubhav_tags
-* reminders
-* alembic_version
+- FastAPI
+- Async SQLAlchemy
+- Dependency Injection
+- Swagger/OpenAPI
+- Health endpoint
 
 ### Authentication
 
-* Clerk integration
-* JWT verification
-* JWKS validation
-* User auto-provisioning
-* Protected routes
-* `/auth/me`
+- Clerk Integration
+- JWT Verification
+- JWKS Validation
+- User Auto Provisioning
 
 ### CRUD
 
-Implemented and verified:
-
-* POST `/anubhavs`
-* GET `/anubhavs`
-* GET `/anubhavs/{id}`
-* PATCH `/anubhavs/{id}`
-* DELETE `/anubhavs/{id}`
-
-Features:
-
-* Ownership validation
-* Pagination
-* Category filtering
-* Tag normalization
-* Cascade delete
-* User-scoped access
+- Create
+- Read
+- Update
+- Delete
+- Ownership validation
+- Pagination
+- Category filtering
+- Tag normalization
 
 ### Search
 
-Implemented and validated:
+- Keyword search
+- Semantic search
+- Category filtering
+- Pagination
+- User scoping
 
-* Keyword search
-* Tag search
-* Category filtering
-* Pagination
-* Case-insensitive matching
+### AI
 
-Validation:
+- Lesson extraction
+- Summary generation
+- Automatic tagging
+- Embedding generation
 
-* 10/10 test cases passed
-* User scoping verified
-* Unauthorized access verified
-* Pagination verified
-* Tag-only matching verified
+### Intelligence
 
-### AI Lesson Extraction
+- Wisdom relationship graph
+- Similarity scoring
+- Connected experience discovery
 
-Implemented:
+### Reminders
 
-* Structured lesson generation
-* AI summaries
-* Automatic tag generation
-* Re-extraction protection
-* Provider abstraction
-* Graceful failure handling
-
-### Embedding Generation
-
-Implemented:
-
-* Local embedding generation
-* Automatic execution after extraction
-* sentence-transformers integration
-* all-MiniLM-L6-v2 model
-* Vector(384) storage
-* Automatic persistence
-* Backfill support for existing records
-* Graceful degradation if embedding generation fails
+- Reminder creation
+- Reminder management
+- Scheduled reflection support
 
 ---
 
-# 🚧 Current Sprint
+## ✅ Frontend
 
-## Semantic Search
+Traditional application pages completed.
 
-Goal:
+Interactive Wisdom World completed.
 
-Retrieve relevant experiences based on semantic similarity instead of exact keyword matching.
+Features include:
 
-Planned flow:
-
-```text
-User Query
-      ↓
-Generate Query Embedding
-      ↓
-Cosine Similarity (pgvector)
-      ↓
-Rank Results
-      ↓
-Return Most Relevant Wisdom
-```
-
----
-
-# ⏭️ Next
-
-1. Semantic Search
-2. Reminder System
-3. Next.js Frontend
-4. MVP Deployment
-5. User Validation
+- Regional exploration
+- Wisdom islands
+- Camera controls
+- Interactive docks
+- Relationship visualization
 
 ---
 
 # 📊 MVP Progress
 
-| Module               | Status         |
-| -------------------- | -------------- |
-| Product Definition   | ✅ Complete     |
-| Infrastructure       | ✅ Complete     |
-| Database             | ✅ Complete     |
-| Authentication       | ✅ Complete     |
-| CRUD                 | ✅ Complete     |
-| Keyword Search       | ✅ Complete     |
-| AI Lesson Extraction | ✅ Complete     |
-| Embedding Generation | ✅ Complete     |
-| Semantic Search      | 🚧 In Progress |
-| Reminder System      | ⏳ Pending      |
-| Frontend             | ⏳ Pending      |
-| Deployment           | ⏳ Pending      |
+| Module | Status |
+|---------|--------|
+| Product Definition | ✅ Complete |
+| Infrastructure | ✅ Complete |
+| Database | ✅ Complete |
+| Authentication | ✅ Complete |
+| CRUD | ✅ Complete |
+| Keyword Search | ✅ Complete |
+| Semantic Search | ✅ Complete |
+| AI Lesson Extraction | ✅ Complete |
+| Embedding Generation | ✅ Complete |
+| Reminder System | ✅ Complete |
+| Wisdom Relationship Graph | ✅ Complete |
+| Traditional Frontend | ✅ Complete |
+| Interactive Wisdom World | ✅ Complete |
+| Deployment | 🚧 In Progress |
+| User Validation | ⏳ Pending |
+
+---
 
 ### Overall Progress
 
-* **Backend MVP:** ~90% Complete
-* **Overall MVP:** ~80% Complete
+- **Backend MVP:** ✅ Complete
+- **Frontend MVP:** ✅ Complete
+- **Feature MVP:** ✅ Complete
+- **Deployment:** 🚧 Remaining
 
-Current operational workflow:
+Current product flow:
 
 ```text
 Authentication
@@ -379,68 +335,58 @@ Capture Experience
         ↓
 Store
         ↓
-AI Lesson Extraction
+AI Extraction
         ↓
 Embedding Generation
         ↓
+Relationship Discovery
+        ↓
 Keyword Search
         ↓
-Retrieve
+Semantic Search
+        ↓
+Interactive Wisdom World
+        ↓
+Retrieve Wisdom
 ```
 
 ---
 
-# 🏛️ Architecture
+# 🏛 Architecture
 
 ```text
-┌─────────────────────────────────────────────┐
-│             Next.js Frontend                │
-│               (Planned)                     │
-└──────────────────┬──────────────────────────┘
-                   │
-             HTTPS + Clerk JWT
-                   ▼
-┌─────────────────────────────────────────────┐
-│             FastAPI Backend                 │
-│                                             │
-│ Routers → Services → AI → Models            │
-│                                             │
-│ • Authentication                            │
-│ • CRUD                                      │
-│ • Search                                    │
-│ • AI Extraction                             │
-│ • Embedding Generation                      │
-└──────────────────┬──────────────────────────┘
-                   ▼
-┌─────────────────────────────────────────────┐
-│        PostgreSQL 16 + pgvector             │
-│                                             │
-│ Users                                       │
-│ Anubhavs                                    │
-│ Tags                                        │
-│ Reminders                                   │
-│ Embeddings (Vector 384)                     │
-└─────────────────────────────────────────────┘
+                Next.js Frontend
+                        │
+                        ▼
+        Traditional UI + Interactive World
+                        │
+                Clerk Authentication
+                        │
+                        ▼
+                FastAPI Backend
+                        │
+     ┌──────────┬──────────┬──────────┐
+     │          │          │          │
+ Authentication CRUD     AI      Search
+                           │
+          ┌────────────────┼────────────────┐
+          │                │                │
+   Lesson Extraction  Embeddings   Relationship Graph
+          │                │                │
+          └────────────────┴────────────────┘
+                        │
+                        ▼
+            PostgreSQL + pgvector
 ```
 
 ---
 
-# 🗂️ Repository Structure
+# 🗂 Repository Structure
 
 ```text
 anubhav/
 ├── apps/
 │   ├── api/
-│   │   ├── app/
-│   │   │   ├── core/
-│   │   │   ├── models/
-│   │   │   ├── routers/
-│   │   │   ├── schemas/
-│   │   │   ├── services/
-│   │   │   └── ai/
-│   │   ├── alembic/
-│   │   ├── main.py
-│   │   └── requirements.txt
 │   └── web/
 ├── docs/
 ├── infra/
@@ -454,44 +400,62 @@ anubhav/
 
 # 🧭 Product Roadmap
 
-### Phase 1 — Experience Vault
+## Phase 1
+
+Experience Vault
 
 Capture and preserve experiences.
 
-### Phase 2 — Wisdom Retrieval
+---
 
-Keyword search and AI-assisted retrieval.
+## Phase 2
 
-### Phase 3 — Semantic Intelligence
+Wisdom Intelligence
 
-Meaning-based retrieval using vector embeddings.
+AI extraction, semantic retrieval, relationship discovery.
 
-### Phase 4 — Reflection Engine
+---
 
-Reminders, resurfacing, and context-aware insights.
+## Phase 3
 
-### Phase 5 — Personal Wisdom Operating System
+Reflection Engine
 
-A lifelong companion that helps people make better decisions using accumulated experiences.
+Context-aware reminders and wisdom resurfacing.
+
+---
+
+## Phase 4
+
+Interactive Wisdom World
+
+Visual exploration of accumulated experiences.
+
+---
+
+## Phase 5
+
+Personal Wisdom Operating System
+
+A lifelong companion that helps people make better decisions through accumulated experience.
 
 ---
 
 # 🧠 Founder Note
 
-Anubhav is not being built to compete with note-taking applications.
+Anubhav is not trying to compete with note-taking applications.
 
-It is being built to answer a different question:
+It is attempting to answer a different question:
 
 > **How can people preserve wisdom gained through experience?**
 
-Every feature should strengthen one or more of these pillars:
+Every feature should strengthen at least one of these pillars:
 
-* Capture
-* Preservation
-* Retrieval
-* Application
+- Capture
+- Preservation
+- Retrieval
+- Application
 
-If a feature does not improve these pillars, it should be reconsidered.
+If a feature strengthens none of them, it should not be built.
 
 ---
 
