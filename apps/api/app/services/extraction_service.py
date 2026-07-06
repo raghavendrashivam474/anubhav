@@ -1,4 +1,4 @@
-import json
+﻿import json
 import logging
 import asyncio
 from functools import partial
@@ -11,6 +11,7 @@ from app.models.anubhav import anubhav_tags
 from app.models.tag import Tag
 from app.core.config import settings
 from app.services.embedding_service import generate_embedding
+from app.services.relationship_service import update_relationships_for_anubhav
 
 logger = logging.getLogger(__name__)
 
@@ -63,7 +64,6 @@ def validate_extraction(data: dict) -> tuple[bool, str]:
 
 
 def call_groq(what_happened: str, category: str, source: str) -> str:
-    """Synchronous Groq call — runs in thread executor."""
     client = Groq(api_key=settings.GROQ_API_KEY)
     response = client.chat.completions.create(
         model="llama-3.3-70b-versatile",
@@ -89,7 +89,6 @@ async def extract_wisdom(
     db: AsyncSession
 ) -> dict:
 
-    # Load anubhav with tags eagerly
     result = await db.execute(
         select(Anubhav)
         .options(selectinload(Anubhav.tags))
@@ -103,16 +102,13 @@ async def extract_wisdom(
     if anubhav is None:
         return {"error": "not_found", "message": "Anubhav not found"}
 
-    # Block re-extraction if already done
     if anubhav.lesson and anubhav.summary:
         return {"error": "already_extracted", "message": "Extraction already performed on this entry"}
 
-    # Capture values before entering executor
     what_happened = anubhav.what_happened
     category = anubhav.category
     source = anubhav.source
 
-    # Call Groq in thread executor
     try:
         loop = asyncio.get_event_loop()
         raw_content = await loop.run_in_executor(
@@ -128,30 +124,25 @@ async def extract_wisdom(
         logger.error(f"Groq API error: {e}")
         return {"error": "ai_timeout", "message": "AI service unavailable. Please try again."}
 
-    # Parse response
     try:
         extracted = json.loads(raw_content)
     except (json.JSONDecodeError, TypeError) as e:
         logger.error(f"Failed to parse Groq response: {e}")
         return {"error": "invalid_response", "message": "AI returned malformed response"}
 
-    # Validate structure
     is_valid, error_msg = validate_extraction(extracted)
     if not is_valid:
         logger.error(f"Extraction validation failed: {error_msg}")
         return {"error": "invalid_response", "message": f"AI response validation failed: {error_msg}"}
 
-    # Persist lesson, summary and tags to database
     try:
         anubhav.lesson = extracted["lesson"].strip()
         anubhav.summary = extracted["summary"].strip()
 
-        # Delete existing tag associations
         await db.execute(
             delete(anubhav_tags).where(anubhav_tags.c.anubhav_id == anubhav.id)
         )
 
-        # Process and insert new tags
         new_tag_names = []
         for tag_name in extracted["tags"]:
             tag_name = tag_name.lower().strip()
@@ -179,13 +170,12 @@ async def extract_wisdom(
         logger.error(f"Database error during extraction: {e}")
         return {"error": "db_failure", "message": "Failed to save extraction results"}
 
-    # Generate embedding — graceful degradation if it fails
+    # Generate embedding
     embedding_stored = False
     try:
         embedding_text = f"{anubhav.lesson} {anubhav.summary}"
         embedding_vector = await generate_embedding(embedding_text)
 
-        # Update embedding in database
         result = await db.execute(
             select(Anubhav).where(Anubhav.id == anubhav.id)
         )
@@ -197,7 +187,15 @@ async def extract_wisdom(
 
     except Exception as e:
         logger.error(f"Embedding generation failed for {anubhav_id}: {e}")
-        # Do not fail the request — extraction already succeeded
+
+    # Update relationships (graceful degradation)
+    relationships_count = 0
+    if embedding_stored:
+        try:
+            relationships_count = await update_relationships_for_anubhav(db, anubhav.id)
+            logger.info(f"Generated {relationships_count} relationships for {anubhav_id}")
+        except Exception as e:
+            logger.error(f"Relationship generation failed for {anubhav_id}: {e}")
 
     return {
         "success": True,
@@ -205,5 +203,6 @@ async def extract_wisdom(
         "lesson": anubhav.lesson,
         "summary": anubhav.summary,
         "tags": new_tag_names,
-        "embedding_stored": embedding_stored
+        "embedding_stored": embedding_stored,
+        "relationships_created": relationships_count,
     }

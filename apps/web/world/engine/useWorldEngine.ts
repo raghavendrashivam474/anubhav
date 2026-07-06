@@ -5,9 +5,8 @@ import { Island, Region, Connection } from "../types"
 import {
   mapExperiencesToIslands,
   mapCategoriesToRegions,
-  buildConnections,
 } from "../mappers/experienceMapper"
-import { getAnubhavs, getAnubhav, setAuthToken } from "@/services/api"
+import { getAnubhavs, getAnubhav, setAuthToken, api } from "@/services/api"
 
 export function useWorldEngine() {
   const [islands, setIslands] = useState<Island[]>([])
@@ -24,12 +23,24 @@ export function useWorldEngine() {
       const token = localStorage.getItem("anubhav_token")
       if (token) setAuthToken(token)
 
-      const data = await getAnubhavs(1, 100)
-      const experiences = data?.items || []
+      const [experiencesData, connectionsData] = await Promise.all([
+        getAnubhavs(1, 100),
+        api.get("/anubhavs/connections").then(r => r.data).catch(() => ({ connections: [] })),
+      ])
+
+      const experiences = experiencesData?.items || []
+      const rawConnections = connectionsData?.connections || []
 
       const mappedIslands = mapExperiencesToIslands(experiences)
       const mappedRegions = mapCategoriesToRegions(mappedIslands)
-      const mappedConnections = buildConnections(mappedIslands)
+
+      // Build real connections from backend
+      const mappedConnections: Connection[] = rawConnections.map((c: any) => ({
+        id: `${c.source_id}-${c.target_id}`,
+        fromIslandId: c.source_id,
+        toIslandId: c.target_id,
+        strength: c.similarity_score,
+      }))
 
       setIslands(mappedIslands)
       setRegions(mappedRegions)
@@ -77,10 +88,12 @@ export function useWorldEngine() {
           raw: updated,
         }
       })
+      // Refresh connections after extraction
+      await loadWorld()
     } catch (e) {
       console.error(e)
     }
-  }, [])
+  }, [loadWorld])
 
   return {
     islands,

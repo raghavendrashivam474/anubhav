@@ -1,9 +1,9 @@
-"""
-HTTP endpoints for Anubhav CRUD + search + AI extraction.
+﻿"""
+HTTP endpoints for Anubhav CRUD + search + AI extraction + relationships.
 All routes:
-  - Require Clerk authentication (Rule 1)
-  - Are user-scoped (Rule 2)
-  - Follow Router → Service → Model pattern (Rule 3)
+  - Require authentication
+  - Are user-scoped
+  - Follow Router -> Service -> Model pattern
 """
 
 import uuid
@@ -26,15 +26,16 @@ from app.services import anubhav_service
 from app.services.extraction_service import extract_wisdom
 from app.schemas.semantic_search import SemanticSearchResponse
 from app.services.semantic_search_service import semantic_search
+from app.services.relationship_service import (
+    get_related_anubhavs,
+    get_all_connections_for_user,
+)
 
 
 router = APIRouter(prefix="/anubhavs", tags=["Anubhavs"])
 
 
-# ──────────────────────────────────────────────────────────
 # CREATE
-# ──────────────────────────────────────────────────────────
-
 @router.post(
     "",
     response_model=AnubhavRead,
@@ -49,10 +50,7 @@ async def create_anubhav(
     return await anubhav_service.create_anubhav(db, user, payload)
 
 
-# ──────────────────────────────────────────────────────────
 # LIST
-# ──────────────────────────────────────────────────────────
-
 @router.get(
     "",
     response_model=AnubhavList,
@@ -71,12 +69,7 @@ async def list_my_anubhavs(
     return AnubhavList(items=items, total=total, page=page, page_size=page_size)
 
 
-# ──────────────────────────────────────────────────────────
 # SEARCH
-# ⚠️ Must be declared BEFORE /{anubhav_id} routes,
-# otherwise FastAPI parses "search" as a UUID.
-# ──────────────────────────────────────────────────────────
-
 @router.get(
     "/search",
     response_model=AnubhavList,
@@ -90,23 +83,13 @@ async def search_my_anubhavs(
     db: AsyncSession = Depends(get_db),
     user: User = Depends(get_current_user),
 ):
-    """
-    Case-insensitive keyword search (ILIKE) across:
-    - what_happened, lesson, advice, summary
-    - tag names
-
-    User-scoped. Paginated. Optional category filter.
-    """
     items, total = await anubhav_service.search_anubhavs(
         db, user, query=q, page=page, page_size=page_size, category=category
     )
     return AnubhavList(items=items, total=total, page=page, page_size=page_size)
 
-# ──────────────────────────────────────────────────────────
-# SEMANTIC SEARCH
-# ⚠️ Must be declared BEFORE /{anubhav_id} routes.
-# ──────────────────────────────────────────────────────────
 
+# SEMANTIC SEARCH
 @router.get(
     "/semantic-search",
     response_model=SemanticSearchResponse,
@@ -120,10 +103,6 @@ async def semantic_search_anubhavs(
     db: AsyncSession = Depends(get_db),
     user: User = Depends(get_current_user),
 ):
-    """
-    Semantic search using vector similarity.
-    Returns experiences ranked by meaning, not exact keyword match.
-    """
     try:
         items, total = await semantic_search(
             db=db,
@@ -149,11 +128,20 @@ async def semantic_search_anubhavs(
     )
 
 
-# ──────────────────────────────────────────────────────────
-# EXTRACT
-# ⚠️ Must be declared BEFORE /{anubhav_id} routes.
-# ──────────────────────────────────────────────────────────
+# CONNECTIONS (for world renderer)
+@router.get(
+    "/connections",
+    summary="Get all relationship connections for the user's world",
+)
+async def get_user_connections(
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(get_current_user),
+):
+    connections = await get_all_connections_for_user(db, user.id)
+    return {"connections": connections, "total": len(connections)}
 
+
+# EXTRACT
 @router.post(
     "/{anubhav_id}/extract",
     response_model=ExtractionResponse,
@@ -164,15 +152,6 @@ async def extract_anubhav_wisdom(
     db: AsyncSession = Depends(get_db),
     user: User = Depends(get_current_user),
 ):
-    """
-    Uses Groq LLM to extract:
-    - lesson
-    - summary
-    - tags
-
-    Extraction is user-scoped.
-    Will not overwrite existing extraction.
-    """
     result = await extract_wisdom(
         anubhav_id=str(anubhav_id),
         user_id=str(user.id),
@@ -198,10 +177,27 @@ async def extract_anubhav_wisdom(
     )
 
 
-# ──────────────────────────────────────────────────────────
-# GET ONE
-# ──────────────────────────────────────────────────────────
+# RELATED
+@router.get(
+    "/{anubhav_id}/related",
+    summary="Get related Anubhavs based on semantic similarity",
+)
+async def get_related(
+    anubhav_id: uuid.UUID,
+    limit: int = Query(5, ge=1, le=20),
+    db: AsyncSession = Depends(get_db),
+    user: User = Depends(get_current_user),
+):
+    # Verify ownership first
+    anubhav = await anubhav_service.get_anubhav(db, user, anubhav_id)
+    if not anubhav:
+        raise HTTPException(status_code=404, detail="Anubhav not found")
 
+    items = await get_related_anubhavs(db, anubhav_id, user.id, limit=limit)
+    return {"items": items, "total": len(items)}
+
+
+# GET ONE
 @router.get(
     "/{anubhav_id}",
     response_model=AnubhavRead,
@@ -215,10 +211,7 @@ async def get_anubhav(
     return await anubhav_service.get_anubhav(db, user, anubhav_id)
 
 
-# ──────────────────────────────────────────────────────────
 # UPDATE
-# ──────────────────────────────────────────────────────────
-
 @router.patch(
     "/{anubhav_id}",
     response_model=AnubhavRead,
@@ -233,10 +226,7 @@ async def update_anubhav(
     return await anubhav_service.update_anubhav(db, user, anubhav_id, payload)
 
 
-# ──────────────────────────────────────────────────────────
 # DELETE
-# ──────────────────────────────────────────────────────────
-
 @router.delete(
     "/{anubhav_id}",
     status_code=status.HTTP_204_NO_CONTENT,

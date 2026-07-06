@@ -1,7 +1,8 @@
-from app.models.user import User
+﻿from app.models.user import User
 from app.models.anubhav import Anubhav, Category, Source, anubhav_tags
 from app.models.tag import Tag
 from app.models.reminder import Reminder, ReminderStatus
+from app.models.relationship import ExperienceRelationship
 
 __all__ = [
     "User",
@@ -12,4 +13,5 @@ __all__ = [
     "Tag",
     "Reminder",
     "ReminderStatus",
+    "ExperienceRelationship",
 ]
