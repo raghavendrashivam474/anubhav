@@ -9,8 +9,9 @@ from app.models.user import User
 from app.models.anubhav import Anubhav
 from app.models.tag import Tag
 from app.models.reminder import Reminder
+from app.models.relationship import ExperienceRelationship
 from app.routers import auth, anubhav, health
-from app.routers import reminder
+from app.routers import reminder, reflections
 from app.scheduler import run_scheduler
 
 logger = logging.getLogger(__name__)
@@ -46,6 +47,7 @@ app.include_router(health.router)
 app.include_router(auth.router)
 app.include_router(anubhav.router)
 app.include_router(reminder.router)
+app.include_router(reflections.router)
 
 
 @app.get("/")
