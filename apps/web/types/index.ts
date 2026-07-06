@@ -62,5 +62,39 @@ export interface SearchResult {
   similarity_score?: number
 }
 
+export interface ReflectionItem {
+  id: string
+  title: string
+  category: string
+  reflection_type: "reminder" | "forgotten" | "relationship" | "random"
+  reason: string
+  lesson: string | null
+  summary: string | null
+  similarity_score: number | null
+  relationship_count: number | null
+  due_date: string | null
+  created_at: string | null
+}
+
+export interface ReflectionResponse {
+  date: string
+  total: number
+  items: ReflectionItem[]
+}
+
+export interface RelatedItem {
+  id: string
+  similarity_score: number
+  what_happened: string
+  lesson: string | null
+  category: string
+  created_at: string
+}
+
+export interface RelatedResponse {
+  items: RelatedItem[]
+  total: number
+}
+
 export type Category = 'career' | 'relationships' | 'health' | 'money' | 'mindset' | 'life'
 export type Source = 'myself' | 'friend' | 'book' | 'podcast' | 'observation'

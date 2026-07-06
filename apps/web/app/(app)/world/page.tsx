@@ -1,5 +1,7 @@
 ﻿"use client"
 
+import { useEffect } from "react"
+import { useSearchParams } from "next/navigation"
 import { useWorldEngine } from "@/world/engine/useWorldEngine"
 import { useCamera } from "@/world/camera/useCamera"
 import WorldRenderer from "@/world/renderer/WorldRenderer"
@@ -8,6 +10,9 @@ import Link from "next/link"
 import { Plus, RotateCcw, Compass, ZoomIn, ZoomOut } from "lucide-react"
 
 export default function WorldPage() {
+  const searchParams = useSearchParams()
+  const focusId = searchParams.get("focus")
+
   const {
     islands,
     regions,
@@ -38,6 +43,16 @@ export default function WorldPage() {
     selectIsland(island)
     focusOn(island.x, island.y, 1.2)
   }
+
+  // Handle deep link focus
+  useEffect(() => {
+    if (!focusId || islands.length === 0) return
+    const target = islands.find(i => i.id === focusId)
+    if (target) {
+      selectIsland(target)
+      focusOn(target.x, target.y, 1.4)
+    }
+  }, [focusId, islands, selectIsland, focusOn])
 
   if (loading) {
     return (

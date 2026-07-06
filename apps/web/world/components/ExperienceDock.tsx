@@ -1,9 +1,10 @@
 ﻿"use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Island } from "../types"
-import { extractWisdom, createReminder, deleteAnubhav } from "@/services/api"
-import { X, Sparkles, Bell, Trash2 } from "lucide-react"
+import { extractWisdom, createReminder, deleteAnubhav, getRelatedAnubhavs } from "@/services/api"
+import { RelatedItem } from "@/types"
+import { X, Sparkles, Bell, Trash2, Link2, ArrowRight } from "lucide-react"
 import { useRouter } from "next/navigation"
 
 interface ExperienceDockProps {
@@ -23,6 +24,28 @@ export default function ExperienceDock({
   const [settingReminder, setSettingReminder] = useState(false)
   const [reminderSet, setReminderSet] = useState(false)
   const [error, setError] = useState("")
+  const [related, setRelated] = useState<RelatedItem[]>([])
+  const [loadingRelated, setLoadingRelated] = useState(false)
+
+  useEffect(() => {
+    if (!island) {
+      setRelated([])
+      return
+    }
+    const loadRelated = async () => {
+      setLoadingRelated(true)
+      try {
+        const data = await getRelatedAnubhavs(island.id, 5)
+        setRelated(data?.items || [])
+      } catch (e) {
+        console.error(e)
+        setRelated([])
+      } finally {
+        setLoadingRelated(false)
+      }
+    }
+    loadRelated()
+  }, [island])
 
   if (!island) return null
 
@@ -73,9 +96,12 @@ export default function ExperienceDock({
     }
   }
 
+  const openRelated = (id: string) => {
+    router.push(`/world?focus=${id}`)
+  }
+
   return (
     <div className="fixed right-0 top-0 h-full w-96 bg-stone-900 border-l border-stone-700 z-50 flex flex-col shadow-2xl">
-      {/* Header */}
       <div className="px-6 py-5 border-b border-stone-700 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div
@@ -102,16 +128,13 @@ export default function ExperienceDock({
         </div>
       </div>
 
-      {/* Content */}
       <div className="flex-1 overflow-y-auto px-6 py-5 space-y-6">
-        {/* Experience */}
         <div className="space-y-2">
           <p className="text-xs text-stone-500 uppercase tracking-wider">Experience</p>
           <p className="text-stone-200 text-sm leading-relaxed">{anubhav.what_happened}</p>
           <p className="text-xs text-stone-500 capitalize">Source: {anubhav.source}</p>
         </div>
 
-        {/* Wisdom */}
         {anubhav.lesson ? (
           <div className="space-y-4">
             <p className="text-xs text-stone-500 uppercase tracking-wider">Wisdom</p>
@@ -149,7 +172,42 @@ export default function ExperienceDock({
           </div>
         )}
 
-        {/* Reminder */}
+        {/* Related Wisdom */}
+        <div className="space-y-3">
+          <p className="text-xs text-stone-500 uppercase tracking-wider flex items-center gap-2">
+            <Link2 size={12} /> Related Wisdom
+          </p>
+          {loadingRelated ? (
+            <p className="text-xs text-stone-500">Loading connections...</p>
+          ) : related.length === 0 ? (
+            <p className="text-xs text-stone-600">No related experiences yet.</p>
+          ) : (
+            <div className="space-y-2">
+              {related.map(item => (
+                <button
+                  key={item.id}
+                  onClick={() => openRelated(item.id)}
+                  className="w-full text-left p-3 bg-stone-800 hover:bg-stone-700 border border-stone-700 rounded-lg transition-colors group"
+                >
+                  <div className="flex items-start gap-2">
+                    <div className="flex-1 min-w-0 space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-stone-500 capitalize">{item.category}</span>
+                        <span className="text-xs text-stone-600">•</span>
+                        <span className="text-xs text-stone-500">{Math.round(item.similarity_score * 100)}% match</span>
+                      </div>
+                      <p className="text-xs text-stone-300 line-clamp-2">
+                        {item.lesson || item.what_happened}
+                      </p>
+                    </div>
+                    <ArrowRight size={12} className="text-stone-600 group-hover:text-stone-400 transition-colors shrink-0 mt-1" />
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
         <div className="space-y-3">
           <p className="text-xs text-stone-500 uppercase tracking-wider flex items-center gap-2">
             <Bell size={12} /> Reminder
@@ -178,7 +236,6 @@ export default function ExperienceDock({
         {error && <p className="text-xs text-red-400">{error}</p>}
       </div>
 
-      {/* Footer */}
       <div className="px-6 py-4 border-t border-stone-700">
         <p className="text-xs text-stone-600">
           {new Date(anubhav.created_at).toLocaleDateString("en-US", {

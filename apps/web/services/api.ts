@@ -75,3 +75,14 @@ export const createReminder = (payload: { anubhav_id: string; trigger_at: string
 
 export const deleteReminder = (id: string) =>
   api.delete(`/reminders/${id}`)
+
+// Reflections
+export const getTodaysReflections = (limit = 5) =>
+  api.get("/reflections/today", { params: { limit } }).then(r => r.data)
+
+// Relationships
+export const getRelatedAnubhavs = (id: string, limit = 5) =>
+  api.get(`/anubhavs/${id}/related`, { params: { limit } }).then(r => r.data)
+
+export const getAllConnections = () =>
+  api.get("/anubhavs/connections").then(r => r.data)

@@ -5,7 +5,8 @@ import Link from "next/link"
 import { useAuth } from "@/hooks/useAuth"
 import { getAnubhavs, getReminders } from "@/services/api"
 import { Anubhav, Reminder } from "@/types"
-import { Plus, Search, Bell, ArrowRight } from "lucide-react"
+import { Plus, Search, Bell, ArrowRight, Globe } from "lucide-react"
+import TodaysReflections from "@/components/reflections/TodaysReflections"
 
 export default function WisdomSpacePage() {
   const { user } = useAuth()
@@ -45,7 +46,7 @@ export default function WisdomSpacePage() {
         <p className="text-stone-400 mt-1">What would you like to reflect on today?</p>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-4 gap-4">
         <Link href="/experiences/new" className="p-5 bg-white border border-stone-200 rounded-xl hover:shadow-md transition-shadow flex items-center gap-3 group">
           <div className="w-9 h-9 rounded-full bg-stone-100 flex items-center justify-center group-hover:bg-stone-200 transition-colors">
             <Plus size={16} className="text-stone-600" />
@@ -53,6 +54,16 @@ export default function WisdomSpacePage() {
           <div>
             <p className="text-sm font-medium text-stone-800">New Experience</p>
             <p className="text-xs text-stone-400">Capture a moment</p>
+          </div>
+        </Link>
+
+        <Link href="/world" className="p-5 bg-white border border-stone-200 rounded-xl hover:shadow-md transition-shadow flex items-center gap-3 group">
+          <div className="w-9 h-9 rounded-full bg-stone-100 flex items-center justify-center group-hover:bg-stone-200 transition-colors">
+            <Globe size={16} className="text-stone-600" />
+          </div>
+          <div>
+            <p className="text-sm font-medium text-stone-800">My World</p>
+            <p className="text-xs text-stone-400">Explore</p>
           </div>
         </Link>
 
@@ -77,6 +88,8 @@ export default function WisdomSpacePage() {
         </Link>
       </div>
 
+      <TodaysReflections />
+
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-medium text-stone-500 uppercase tracking-wider">Recent Experiences</h3>
@@ -95,7 +108,7 @@ export default function WisdomSpacePage() {
         ) : (
           <div className="space-y-3">
             {anubhavs.map((item) => (
-              <Link key={item.id} href={`/experiences/${item.id}`} className="block p-5 bg-white border border-stone-200 rounded-xl hover:shadow-md transition-shadow">
+              <Link key={item.id} href={`/world?focus=${item.id}`} className="block p-5 bg-white border border-stone-200 rounded-xl hover:shadow-md transition-shadow">
                 <div className="flex items-start justify-between gap-4">
                   <div className="space-y-1 flex-1 min-w-0">
                     <p className="text-sm text-stone-700 line-clamp-2">{item.what_happened}</p>
