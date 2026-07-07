@@ -10,12 +10,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const { token, isLoading } = useAuth()
   const router = useRouter()
 
+  // Set token synchronously so children can make authed API calls immediately
+  if (token) {
+    setAuthToken(token)
+  }
+
   useEffect(() => {
     if (!isLoading && !token) {
       router.push("/sign-in")
-    }
-    if (token) {
-      setAuthToken(token)
     }
   }, [token, isLoading, router])
 
