@@ -1,6 +1,28 @@
-﻿import Link from "next/link"
+﻿"use client"
+
+import { useEffect } from "react"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { useAuth } from "@/hooks/useAuth"
 
 export default function LandingPage() {
+  const router = useRouter()
+  const { token, isLoading } = useAuth()
+
+  useEffect(() => {
+    if (!isLoading && token) {
+      router.replace("/world")
+    }
+  }, [token, isLoading, router])
+
+  if (isLoading || token) {
+    return (
+      <div className="min-h-screen bg-stone-50 flex items-center justify-center">
+        <p className="text-stone-400 text-sm">Loading...</p>
+      </div>
+    )
+  }
+
   return (
     <main className="min-h-screen bg-stone-50 flex flex-col">
       <header className="px-8 py-6 flex justify-between items-center border-b border-stone-200">

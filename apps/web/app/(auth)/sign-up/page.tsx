@@ -23,7 +23,7 @@ export default function SignUpPage() {
       const data = await register(email, password, name)
       setAuthToken(data.token)
       authLogin(data.token, data.user)
-      router.push("/wisdom-space")
+      router.push("/world")
     } catch (err: any) {
       setError(err?.response?.data?.detail || "Registration failed")
     } finally {
@@ -64,7 +64,7 @@ export default function SignUpPage() {
             onChange={e => setPassword(e.target.value)}
             required
             className="w-full px-4 py-2.5 border border-stone-200 rounded-lg text-sm text-stone-700 focus:outline-none focus:ring-1 focus:ring-stone-400"
-            placeholder="••••••••"
+            placeholder="At least 8 characters"
           />
         </div>
         {error && <p className="text-sm text-red-500">{error}</p>}

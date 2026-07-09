@@ -4,14 +4,13 @@ import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { useAuth } from "@/hooks/useAuth"
 import { setAuthToken } from "@/services/api"
-import { Home, BookOpen, Search, Clock, Bell, Settings, LogOut, Globe } from "lucide-react"
+import { BookOpen, Search, Clock, Bell, Settings, LogOut, Globe } from "lucide-react"
 
 const navItems = [
-  { href: "/wisdom-space", label: "Wisdom Space", icon: Home },
-  { href: "/world", label: "My World", icon: Globe },
-  { href: "/experiences", label: "My Experiences", icon: BookOpen },
+  { href: "/world", label: "World", icon: Globe },
+  { href: "/experiences", label: "Experiences", icon: BookOpen },
   { href: "/search", label: "Search", icon: Search },
-  { href: "/journey", label: "My Journey", icon: Clock },
+  { href: "/journey", label: "Journey", icon: Clock },
   { href: "/reflections", label: "Reflections", icon: Bell },
   { href: "/settings", label: "Settings", icon: Settings },
 ]
@@ -31,7 +30,7 @@ export default function Navigation() {
     <nav className="fixed left-0 top-0 h-full w-56 bg-white border-r border-stone-200 flex flex-col z-50">
       <div className="px-6 py-6 border-b border-stone-100">
         <h1 className="text-lg font-semibold text-stone-800">Anubhav</h1>
-        <p className="text-xs text-stone-400 mt-0.5">Wisdom Space</p>
+        <p className="text-xs text-stone-400 mt-0.5">Wisdom World</p>
       </div>
 
       <div className="flex-1 py-4 px-3 space-y-1">
