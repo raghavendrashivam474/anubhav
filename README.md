@@ -27,7 +27,7 @@ Everyone accumulates valuable experiences throughout life.
 
 These experiences often contain lessons that required significant time, effort, sacrifice, or failure to acquire.
 
-Yet most of them disappear.
+Yet most disappear.
 
 Not because they lack value.
 
@@ -43,79 +43,77 @@ Anubhav exists to preserve those lessons and make them available when they matte
 
 Capture meaningful experiences before they are forgotten.
 
----
-
 ## AI Wisdom Extraction
 
-Transform raw experiences into structured knowledge through:
+Transform raw experiences into structured wisdom through:
 
 - Lessons
 - Summaries
 - Automatic tags
 
----
-
 ## Semantic Search
 
-Search experiences by **meaning**, not only keywords.
+Search experiences by **meaning**, not only exact keywords.
 
-Powered by vector embeddings using **pgvector**.
-
----
+Vector embeddings and pgvector enable semantic retrieval across accumulated experiences.
 
 ## Wisdom Relationship Graph
 
-Automatically discover related experiences through semantic similarity.
+Automatically discover semantically related experiences.
 
-Reveal recurring patterns, connected decisions, and repeated lessons.
-
----
+Reveal recurring patterns, connected decisions, similar lessons, and repeated mistakes.
 
 ## Reflection Engine
 
-Surface relevant wisdom through:
+Proactively resurface wisdom through:
 
 - Daily reflections
 - Scheduled reminders
 - Forgotten experiences
 - Related wisdom
 
----
-
 ## Interactive Wisdom World
 
-Explore experiences inside an immersive world.
+Explore accumulated experiences inside an immersive spatial world.
 
 - Experiences become islands
 - Categories become regions
 - Relationships become pathways
-- Reflections become discoveries
+- Reflections guide rediscovery
 
-Instead of browsing notes, users explore accumulated wisdom.
+The Wisdom World is the primary authenticated experience of Anubhav.
+
+Instead of navigating pages of notes, users explore their accumulated wisdom.
 
 ---
 
 # 🔄 Product Flow
 
 ```text
-Experience
-      ↓
-Capture
-      ↓
+Public Landing Page
+        ↓
+Sign Up / Sign In
+        ↓
+Wisdom World
+        ↓
+Capture Experience
+        ↓
 AI Understanding
-      ↓
+        ↓
 Structured Wisdom
-      ↓
+        ↓
 Embedding Generation
-      ↓
+        ↓
 Relationship Discovery
-      ↓
-Reflection
-      ↓
-Retrieval
-      ↓
+        ↓
+Reflection & Retrieval
+        ↓
 Better Decisions
 ```
+
+The landing page is Anubhav's public front door.
+
+The Wisdom World is the authenticated home.
 
 ---
 
@@ -124,27 +122,32 @@ Better Decisions
 ## Backend
 
 - Authentication
-- CRUD Operations
+- Experience CRUD
+- Categories and Tags
 - Keyword Search
 - Semantic Search
 - AI Lesson Extraction
-- Embedding Generation
+- AI Summary Generation
+- Automatic Tag Generation
+- Local Embedding Generation
 - Reminder System
 - Reflection Engine
 - Wisdom Relationship Graph
 
 ## Frontend
 
-- Landing Page
-- Authentication
+- Public Landing Page
+- Sign In and Sign Up
+- Interactive Wisdom World
+- World-First Navigation
+- Hover-Reveal World Sidebar
+- Experience Dock
 - Experiences
 - Search
 - Reflections
 - Journey
 - Settings
-- Interactive Wisdom World
-- World-First Navigation
-- Experience Dock
+- Connected Wisdom Navigation
 
 ---
 
@@ -162,19 +165,20 @@ Better Decisions
 - FastAPI
 - SQLAlchemy 2.0
 - AsyncPG
-- Pydantic
+- Pydantic v2
 
 ## Database
 
 - PostgreSQL 16
 - pgvector
 
-## AI
+## Artificial Intelligence
 
-### Extraction
+### Wisdom Extraction
 
 - Groq API
 - Structured JSON outputs
+- Provider-agnostic extraction architecture
 
 ### Embeddings
 
@@ -193,46 +197,54 @@ Better Decisions
 # 🏛 Architecture
 
 ```text
-                    Next.js Frontend
-                           │
-                           ▼
-             World-First User Experience
-                           │
-                   Clerk Authentication
-                           │
-                           ▼
-                    FastAPI Backend
-                           │
-      ┌────────────┬────────────┬────────────┐
-      │            │            │
- Authentication   CRUD     Intelligence
-                               │
-      ┌────────────────────────┼───────────────────────┐
-      │                        │                       │
-Lesson Extraction       Embeddings        Reflection Engine
-      │                        │                       │
-      └───────────────┬────────┴───────────────┐
-                      │                        │
-          Relationship Graph          Search Services
-                      │
-                      ▼
-             PostgreSQL + pgvector
+                    Public Landing Page
+                             │
+                     Sign Up / Sign In
+                             │
+                             ▼
+                  World-First Experience
+                             │
+                     Interactive World
+                             │
+                             ▼
+                      FastAPI Backend
+                             │
+       ┌─────────────────────┼─────────────────────┐
+       │                     │                     │
+Authentication            CRUD               Intelligence
+                                                   │
+          ┌────────────────┼────────────────┬───────┐
+          │                │                │       │
+ AI Lesson Extraction  Embeddings      Reflection  Search
+          │                │             Engine    Services
+          └────────────────┴──────────┬─────────────┘
+                                     │
+                         Relationship Discovery
+                                     │
+                                     ▼
+                         PostgreSQL + pgvector
 ```
 
 ---
 
 # 📊 Project Status
 
-**Current Stage**
+## Current Stage
 
-✅ Feature-Complete MVP
+**Feature-Complete and Experience-Complete MVP**
 
-Current focus:
+Core product capabilities are implemented and integrated.
 
-- Deployment
+### Current Focus
+
+- Authentication hardening
+- Deployment readiness
+- Production deployment
 - User validation
 - Performance optimization
 - Product refinement
+
+A known pre-deployment priority is graceful handling of expired authentication tokens.
 
 ---
 
@@ -251,8 +263,11 @@ Current focus:
 | Reflection Engine | ✅ |
 | Relationship Graph | ✅ |
 | Interactive Wisdom World | ✅ |
+| Unified Experience Layer | ✅ |
 | World-First Experience | ✅ |
-| Deployment | 🚧 |
+| Public/Auth Routing Flow | ✅ |
+| Authentication Hardening | 🚧 |
+| Deployment | ⏳ |
 | User Validation | ⏳ |
 
 ---
@@ -266,7 +281,16 @@ Every feature should strengthen one or more of these pillars:
 - Retrieval
 - Application
 
-If a feature improves none of them, it probably doesn't belong in Anubhav.
+If a feature strengthens none of them, it probably does not belong in Anubhav.
+
+Additional engineering principles:
+
+- Privacy is non-negotiable.
+- Retrieval matters more than storage.
+- Reflection matters more than engagement.
+- Validate behavior before sophistication.
+- AI providers should remain replaceable.
+- Prefer architectural evolution over unnecessary rewrites.
 
 ---
 
@@ -278,62 +302,95 @@ Capture and preserve experiences.
 
 ### Phase 2 — Wisdom Intelligence ✅
 
-AI extraction, semantic search, embeddings.
+AI extraction, embeddings, and semantic retrieval.
 
 ### Phase 3 — Relationship Discovery ✅
 
-Connected wisdom and similarity graph.
+Discover connected wisdom through semantic similarity.
 
 ### Phase 4 — Reflection Engine ✅
 
-Proactive wisdom resurfacing.
+Proactively resurface relevant and forgotten wisdom.
 
 ### Phase 5 — Interactive Wisdom World ✅
 
-Explore wisdom spatially.
+Transform accumulated experiences into an explorable spatial world.
 
-### Phase 6 — Deployment 🚧
+### Phase 6 — World-First Experience ✅
 
-Production deployment and performance optimization.
+Make the Wisdom World the primary authenticated home while preserving traditional interfaces as supporting tools.
 
-### Phase 7 — User Validation ⏳
+### Phase 7 — Deployment Readiness 🚧
 
-Validate the product with real users before expanding the platform.
+Harden authentication, verify production configuration, optimize critical paths, and prepare the MVP for deployment.
+
+### Phase 8 — User Validation ⏳
+
+Validate the core product question with real users:
+
+> **Will people consistently preserve experiences and revisit them when future situations make those lessons relevant?**
 
 ---
 
 # 🚀 Getting Started
 
 ```bash
-# Clone repository
-git clone https://github.com/raghavendrashivam474/anubhav.git
+# Clone the repository
+git clone <repository-url>
 
 cd anubhav
 
-# Start infrastructure
+# Start PostgreSQL + pgvector
 docker compose up -d
+```
 
-# Backend
+### Backend
+
+```bash
 cd apps/api
-pip install -r requirements.txt
-uvicorn main:app --reload
 
-# Frontend
-cd ../web
+pip install -r requirements.txt
+
+uvicorn main:app --reload
+```
+
+### Frontend
+
+```bash
+cd apps/web
+
 npm install
+
 npm run dev
+```
+
+The local application flow is:
+
+```text
+/
+↓
+Landing Page
+↓
+/sign-up or /sign-in
+↓
+/world
 ```
 
 ---
 
 # 📚 Documentation
 
-Additional documentation is available in the `docs/` directory.
+Detailed project documentation is maintained separately from the README.
 
-- Founder Bible
-- Architecture Notes
+Documentation includes:
+
+- Founder Handover & Product Continuity Bible
 - Junior Developer Handover
+- Architecture and Engineering Decisions
 - Sprint Reports
+- Product and Validation Notes
+
+The README intentionally remains a concise overview of the product and its current state.
 
 ---
 
