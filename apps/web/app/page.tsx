@@ -1,27 +1,23 @@
 ﻿"use client"
 
-import { useEffect } from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
 import { useAuth } from "@/hooks/useAuth"
 
 export default function LandingPage() {
-  const router = useRouter()
   const { token, isLoading } = useAuth()
 
-  useEffect(() => {
-    if (!isLoading && token) {
-      router.replace("/world")
-    }
-  }, [token, isLoading, router])
-
-  if (isLoading || token) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-stone-50 flex items-center justify-center">
         <p className="text-stone-400 text-sm">Loading...</p>
       </div>
     )
   }
+
+  const primaryHref = token ? "/world" : "/sign-up"
+  const primaryLabel = token ? "Enter Your World" : "Begin Your Journey"
+  const secondaryHref = token ? "/world" : "/sign-in"
+  const secondaryLabel = token ? "Go to World" : "Sign In"
 
   return (
     <main className="min-h-screen bg-stone-50 flex flex-col">
@@ -31,11 +27,11 @@ export default function LandingPage() {
           <p className="text-xs text-stone-400">Personal Wisdom Space</p>
         </div>
         <div className="flex gap-3">
-          <Link href="/sign-in" className="px-4 py-2 text-sm text-stone-600 hover:text-stone-900 transition-colors">
-            Sign In
+          <Link href={secondaryHref} className="px-4 py-2 text-sm text-stone-600 hover:text-stone-900 transition-colors">
+            {secondaryLabel}
           </Link>
-          <Link href="/sign-up" className="px-4 py-2 text-sm bg-stone-800 hover:bg-stone-700 text-white rounded-lg transition-colors">
-            Get Started
+          <Link href={primaryHref} className="px-4 py-2 text-sm bg-stone-800 hover:bg-stone-700 text-white rounded-lg transition-colors">
+            {primaryLabel}
           </Link>
         </div>
       </header>
@@ -54,11 +50,11 @@ export default function LandingPage() {
             Capture meaningful experiences, extract lessons with AI, and resurface wisdom when you need it most.
           </p>
           <div className="flex gap-4 justify-center">
-            <Link href="/sign-up" className="px-8 py-3 text-sm bg-stone-800 hover:bg-stone-700 text-white rounded-lg transition-colors">
-              Begin Your Journey
+            <Link href={primaryHref} className="px-8 py-3 text-sm bg-stone-800 hover:bg-stone-700 text-white rounded-lg transition-colors">
+              {primaryLabel}
             </Link>
-            <Link href="/sign-in" className="px-8 py-3 text-sm border border-stone-300 text-stone-600 hover:bg-stone-100 rounded-lg transition-colors">
-              Sign In
+            <Link href={secondaryHref} className="px-8 py-3 text-sm border border-stone-300 text-stone-600 hover:bg-stone-100 rounded-lg transition-colors">
+              {secondaryLabel}
             </Link>
           </div>
         </div>
