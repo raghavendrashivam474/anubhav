@@ -31,10 +31,10 @@ export function useWorldEngine() {
       const experiences = experiencesData?.items || []
       const rawConnections = connectionsData?.connections || []
 
-      const mappedIslands = mapExperiencesToIslands(experiences)
+      // Pass connections to mapper for force-directed layout
+      const mappedIslands = mapExperiencesToIslands(experiences, rawConnections)
       const mappedRegions = mapCategoriesToRegions(mappedIslands)
 
-      // Build real connections from backend
       const mappedConnections: Connection[] = rawConnections.map((c: any) => ({
         id: `${c.source_id}-${c.target_id}`,
         fromIslandId: c.source_id,
@@ -88,7 +88,6 @@ export function useWorldEngine() {
           raw: updated,
         }
       })
-      // Refresh connections after extraction
       await loadWorld()
     } catch (e) {
       console.error(e)
