@@ -15,7 +15,41 @@ export const setAuthToken = (token: string | null) => {
   }
 }
 
-// Auth
+// --- Global 401 Interceptor ---
+let isHandling401 = false
+
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (error.response?.status === 401 && !isHandling401) {
+      isHandling401 = true
+      try {
+        // Dynamic import to avoid circular dependency
+        const { getGlobalInvalidateSession } = await import("@/hooks/useAuth")
+        const invalidate = getGlobalInvalidateSession()
+        if (invalidate) invalidate()
+        if (typeof window !== "undefined") {
+          window.location.href = "/sign-in"
+        }
+      } finally {
+        setTimeout(() => { isHandling401 = false }, 2000)
+      }
+    }
+    return Promise.reject(error)
+  }
+)
+
+// --- Health Check ---
+export const checkHealth = async (): Promise<boolean> => {
+  try {
+    const res = await axios.get(`${API_URL}/health`, { timeout: 5000 })
+    return res.status === 200
+  } catch {
+    return false
+  }
+}
+
+// --- Auth ---
 export const register = (email: string, password: string, name?: string) =>
   api.post("/auth/register", { email, password, name }).then(r => r.data)
 
@@ -25,7 +59,7 @@ export const login = (email: string, password: string) =>
 export const getMe = () =>
   api.get("/auth/me").then(r => r.data)
 
-// Anubhavs
+// --- Anubhavs ---
 export const getAnubhavs = (page = 1, pageSize = 20, category?: string) => {
   const params: Record<string, any> = { page, page_size: pageSize }
   if (category) params.category = category
@@ -53,7 +87,7 @@ export const deleteAnubhav = (id: string) =>
 export const extractWisdom = (id: string) =>
   api.post(`/anubhavs/${id}/extract`).then(r => r.data)
 
-// Search
+// --- Search ---
 export const keywordSearch = (query: string, page = 1, pageSize = 20, category?: string) => {
   const params: Record<string, any> = { q: query, page, page_size: pageSize }
   if (category) params.category = category
@@ -66,7 +100,7 @@ export const semanticSearch = (query: string, page = 1, pageSize = 20, category?
   return api.get("/anubhavs/semantic-search", { params }).then(r => r.data)
 }
 
-// Reminders
+// --- Reminders ---
 export const getReminders = (page = 1, pageSize = 20) =>
   api.get("/reminders", { params: { page, page_size: pageSize } }).then(r => r.data)
 
@@ -76,11 +110,11 @@ export const createReminder = (payload: { anubhav_id: string; trigger_at: string
 export const deleteReminder = (id: string) =>
   api.delete(`/reminders/${id}`)
 
-// Reflections
+// --- Reflections ---
 export const getTodaysReflections = (limit = 5) =>
   api.get("/reflections/today", { params: { limit } }).then(r => r.data)
 
-// Relationships
+// --- Relationships ---
 export const getRelatedAnubhavs = (id: string, limit = 5) =>
   api.get(`/anubhavs/${id}/related`, { params: { limit } }).then(r => r.data)
 
