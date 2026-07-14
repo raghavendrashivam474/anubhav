@@ -6,7 +6,9 @@ import {
   mapExperiencesToIslands,
   mapCategoriesToRegions,
 } from "../mappers/experienceMapper"
-import { getAnubhavs, getAnubhav, setAuthToken, api } from "@/services/api"
+import { getAnubhavs, getAnubhav, setAuthToken, api, checkHealth } from "@/services/api"
+
+export type WorldLoadState = "initializing" | "loading" | "ready" | "error" | "unavailable"
 
 export function useWorldEngine() {
   const [islands, setIslands] = useState<Island[]>([])
@@ -14,12 +16,14 @@ export function useWorldEngine() {
   const [connections, setConnections] = useState<Connection[]>([])
   const [selectedIsland, setSelectedIsland] = useState<Island | null>(null)
   const [hoveredIslandId, setHoveredIslandId] = useState<string | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState("")
+  const [loadState, setLoadState] = useState<WorldLoadState>("initializing")
+  const [errorMessage, setErrorMessage] = useState("")
 
   const loadWorld = useCallback(async () => {
     try {
-      setLoading(true)
+      setLoadState("loading")
+      setErrorMessage("")
+
       const token = localStorage.getItem("anubhav_token")
       if (token) setAuthToken(token)
 
@@ -31,7 +35,6 @@ export function useWorldEngine() {
       const experiences = experiencesData?.items || []
       const rawConnections = connectionsData?.connections || []
 
-      // Pass connections to mapper for force-directed layout
       const mappedIslands = mapExperiencesToIslands(experiences, rawConnections)
       const mappedRegions = mapCategoriesToRegions(mappedIslands)
 
@@ -45,16 +48,28 @@ export function useWorldEngine() {
       setIslands(mappedIslands)
       setRegions(mappedRegions)
       setConnections(mappedConnections)
-    } catch (e) {
-      console.error(e)
-      setError("Failed to load world")
-    } finally {
-      setLoading(false)
+      setLoadState("ready")
+    } catch (e: any) {
+      // 401 is handled globally by interceptor — don't show world error
+      if (e?.response?.status === 401) return
+
+      // Check if backend is reachable
+      const healthy = await checkHealth()
+      if (!healthy) {
+        setLoadState("unavailable")
+        setErrorMessage("Anubhav is currently unreachable. Please try again shortly.")
+      } else {
+        setLoadState("error")
+        setErrorMessage("Unable to load your world. Your experiences are safe.")
+      }
     }
   }, [])
 
   useEffect(() => {
-    loadWorld()
+    const token = localStorage.getItem("anubhav_token")
+    if (token) {
+      loadWorld()
+    }
   }, [loadWorld])
 
   const selectIsland = useCallback((island: Island) => {
@@ -100,8 +115,8 @@ export function useWorldEngine() {
     connections,
     selectedIsland,
     hoveredIslandId,
-    loading,
-    error,
+    loadState,
+    errorMessage,
     selectIsland,
     deselectIsland,
     setHoveredIslandId,

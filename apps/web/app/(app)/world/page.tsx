@@ -7,7 +7,7 @@ import { useCamera } from "@/world/camera/useCamera"
 import WorldRenderer from "@/world/renderer/WorldRenderer"
 import ExperienceDock from "@/world/components/ExperienceDock"
 import Link from "next/link"
-import { Plus, RotateCcw, ZoomIn, ZoomOut } from "lucide-react"
+import { Plus, RotateCcw, ZoomIn, ZoomOut, RefreshCw } from "lucide-react"
 
 export default function WorldPage() {
   const searchParams = useSearchParams()
@@ -19,12 +19,13 @@ export default function WorldPage() {
     connections,
     selectedIsland,
     hoveredIslandId,
-    loading,
-    error,
+    loadState,
+    errorMessage,
     selectIsland,
     deselectIsland,
     setHoveredIslandId,
     refreshIsland,
+    loadWorld,
   } = useWorldEngine()
 
   const {
@@ -53,22 +54,64 @@ export default function WorldPage() {
     }
   }, [focusId, islands, selectIsland, focusOn])
 
-  if (loading) {
+  // Initializing state
+  if (loadState === "initializing") {
     return (
       <div className="w-screen h-screen bg-slate-950 flex items-center justify-center">
-        <p className="text-slate-400 text-sm">Preparing your wisdom world...</p>
+        <p className="text-slate-500 text-sm">Initializing...</p>
       </div>
     )
   }
 
-  if (error) {
+  // Loading state
+  if (loadState === "loading") {
     return (
       <div className="w-screen h-screen bg-slate-950 flex items-center justify-center">
-        <p className="text-red-400 text-sm">{error}</p>
+        <div className="text-center space-y-3">
+          <p className="text-slate-400 text-sm">Preparing your wisdom world...</p>
+          <div className="w-32 h-px bg-slate-800 mx-auto" />
+        </div>
       </div>
     )
   }
 
+  // Service unavailable
+  if (loadState === "unavailable") {
+    return (
+      <div className="w-screen h-screen bg-slate-950 flex items-center justify-center">
+        <div className="text-center space-y-4 max-w-sm">
+          <p className="text-slate-400 text-sm">{errorMessage}</p>
+          <button
+            onClick={loadWorld}
+            className="px-4 py-2 text-sm bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition-colors flex items-center gap-2 mx-auto"
+          >
+            <RefreshCw size={14} />
+            Try Again
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  // Error state (backend reachable but request failed)
+  if (loadState === "error") {
+    return (
+      <div className="w-screen h-screen bg-slate-950 flex items-center justify-center">
+        <div className="text-center space-y-4 max-w-sm">
+          <p className="text-slate-400 text-sm">{errorMessage}</p>
+          <button
+            onClick={loadWorld}
+            className="px-4 py-2 text-sm bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition-colors flex items-center gap-2 mx-auto"
+          >
+            <RefreshCw size={14} />
+            Try Again
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  // Ready state
   return (
     <div className="relative w-screen h-screen overflow-hidden">
       <WorldRenderer
@@ -86,7 +129,6 @@ export default function WorldPage() {
         onWheel={onWheel}
       />
 
-      {/* Minimal top bar — right side only, world remains dominant */}
       <div className="absolute top-4 right-4 z-30 flex items-center gap-2">
         <button
           onClick={zoomOut}
@@ -95,7 +137,6 @@ export default function WorldPage() {
         >
           <ZoomOut size={14} />
         </button>
-
         <button
           onClick={zoomIn}
           className="p-2 bg-slate-900/70 backdrop-blur hover:bg-slate-800 text-slate-300 rounded-lg transition-colors"
@@ -103,7 +144,6 @@ export default function WorldPage() {
         >
           <ZoomIn size={14} />
         </button>
-
         <button
           onClick={resetCamera}
           className="p-2 bg-slate-900/70 backdrop-blur hover:bg-slate-800 text-slate-300 rounded-lg transition-colors"
@@ -111,7 +151,6 @@ export default function WorldPage() {
         >
           <RotateCcw size={14} />
         </button>
-
         <Link
           href="/experiences/new"
           className="px-3 py-2 text-xs bg-white/90 backdrop-blur hover:bg-white text-stone-800 rounded-lg transition-colors flex items-center gap-1.5 font-medium"
@@ -121,7 +160,6 @@ export default function WorldPage() {
         </Link>
       </div>
 
-      {/* Region legend — subtle */}
       <div className="absolute bottom-6 left-6 z-30 space-y-1 opacity-60 hover:opacity-100 transition-opacity">
         {regions.map(region => (
           <div key={region.id} className="flex items-center gap-2">
@@ -131,12 +169,11 @@ export default function WorldPage() {
         ))}
       </div>
 
-      {/* Experience count — subtle */}
       <div className="absolute bottom-6 right-6 z-30 opacity-40 hover:opacity-100 transition-opacity">
         <p className="text-xs text-slate-400">{islands.length} experiences</p>
       </div>
 
-      {islands.length === 0 && (
+      {islands.length === 0 && loadState === "ready" && (
         <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
           <div className="text-center space-y-4">
             <p className="text-slate-500 text-lg font-light">Your ocean is empty.</p>
