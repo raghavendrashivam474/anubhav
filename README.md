@@ -81,6 +81,8 @@ Explore accumulated experiences inside an immersive spatial world.
 - Relationships become pathways
 - Reflections guide rediscovery
 
+A force-directed layout combines semantic relationship attraction, category gravity, and island repulsion to organize the world automatically.
+
 The Wisdom World is the primary authenticated experience of Anubhav.
 
 Instead of navigating pages of notes, users explore their accumulated wisdom.
@@ -121,7 +123,7 @@ The Wisdom World is the authenticated home.
 
 ## Backend
 
-- Authentication
+- JWT Authentication
 - Experience CRUD
 - Categories and Tags
 - Keyword Search
@@ -133,6 +135,8 @@ The Wisdom World is the authenticated home.
 - Reminder System
 - Reflection Engine
 - Wisdom Relationship Graph
+- Health Monitoring
+- Centralized Application Logging
 
 ## Frontend
 
@@ -141,13 +145,29 @@ The Wisdom World is the authenticated home.
 - Interactive Wisdom World
 - World-First Navigation
 - Hover-Reveal World Sidebar
+- Force-Directed Island Layout
 - Experience Dock
 - Experiences
 - Search
-- Reflections
+- Daily Reflections
+- Reminder Management
 - Journey
 - Settings
 - Connected Wisdom Navigation
+- Explicit World Recovery States
+- Backend Availability Awareness
+
+## Reliability
+
+- Centralized authentication lifecycle
+- Global expired-session handling
+- API failure classification
+- World loading and recovery states
+- Reactive backend health checks
+- Environment configuration audit
+- Migration lifecycle verification
+- Production startup verification
+- Reproducible critical-path smoke validation
 
 ---
 
@@ -191,6 +211,7 @@ The Wisdom World is the authenticated home.
 
 - Docker
 - Turborepo
+- Alembic
 
 ---
 
@@ -202,9 +223,25 @@ The Wisdom World is the authenticated home.
                      Sign Up / Sign In
                              │
                              ▼
+                  Authentication Lifecycle
+                             │
+                             ▼
                   World-First Experience
                              │
                      Interactive World
+                             │
+                             ▼
+                       API Client Layer
+                             │
+                  Failure Classification
+                             │
+          ┌──────────────────┼──────────────────┐
+          │                  │                  │
+       Success              401          Recoverable Error
+          │                  │                  │
+       Continue       Session Recovery      UI Recovery
+          │                                     │
+          └──────────────────┬──────────────────┘
                              │
                              ▼
                       FastAPI Backend
@@ -231,20 +268,40 @@ Authentication            CRUD               Intelligence
 
 ## Current Stage
 
-**Feature-Complete and Experience-Complete MVP**
+**Deployment-Ready MVP**
 
-Core product capabilities are implemented and integrated.
+The core product, frontend experience, intelligence systems, and reliability layer are implemented and integrated.
+
+Sprint 17 completed deployment-readiness validation with:
+
+```text
+33 Smoke Tests
+33 Passed
+0 Failed
+```
+
+Verified areas include:
+
+- Infrastructure
+- Authentication
+- Experience CRUD
+- AI extraction
+- Embedding persistence
+- Keyword and semantic retrieval
+- Relationship discovery
+- World rendering
+- Reflection workflows
+- Session failure handling
+- Backend outage recovery
 
 ### Current Focus
 
-- Authentication hardening
-- Deployment readiness
+- Production security configuration
 - Production deployment
+- Minor pre-deploy polish
 - User validation
-- Performance optimization
+- Performance observation
 - Product refinement
-
-A known pre-deployment priority is graceful handling of expired authentication tokens.
 
 ---
 
@@ -266,9 +323,62 @@ A known pre-deployment priority is graceful handling of expired authentication t
 | Unified Experience Layer | ✅ |
 | World-First Experience | ✅ |
 | Public/Auth Routing Flow | ✅ |
-| Authentication Hardening | 🚧 |
-| Deployment | ⏳ |
+| Authentication Hardening | ✅ |
+| API Failure Recovery | ✅ |
+| World Recovery States | ✅ |
+| Environment Audit | ✅ |
+| Startup Verification | ✅ |
+| Critical-Path Validation | ✅ |
+| Production Deployment | 🚧 |
 | User Validation | ⏳ |
+
+---
+
+# 🧪 Deployment Readiness
+
+The verified application startup lifecycle is:
+
+```text
+PostgreSQL
+      ↓
+pgvector
+      ↓
+Alembic Migrations
+      ↓
+FastAPI
+      ↓
+Health Verification
+      ↓
+Next.js Frontend
+      ↓
+Application Ready
+```
+
+Current migration state has been verified with a single Alembic head and an idempotent `upgrade head` lifecycle.
+
+The critical Anubhav product path has also been smoke-tested end to end:
+
+```text
+Authentication
+      ↓
+Capture Experience
+      ↓
+AI Extraction
+      ↓
+Embedding Persistence
+      ↓
+Semantic Retrieval
+      ↓
+Relationship Discovery
+      ↓
+Wisdom World
+      ↓
+Reflection
+      ↓
+Failure Recovery
+```
+
+A reproducible Sprint 17 smoke-validation script is maintained under `scripts/`.
 
 ---
 
@@ -291,6 +401,7 @@ Additional engineering principles:
 - Validate behavior before sophistication.
 - AI providers should remain replaceable.
 - Prefer architectural evolution over unnecessary rewrites.
+- Reliability is part of the product experience.
 
 ---
 
@@ -320,11 +431,15 @@ Transform accumulated experiences into an explorable spatial world.
 
 Make the Wisdom World the primary authenticated home while preserving traditional interfaces as supporting tools.
 
-### Phase 7 — Deployment Readiness 🚧
+### Phase 7 — Deployment Readiness ✅
 
-Harden authentication, verify production configuration, optimize critical paths, and prepare the MVP for deployment.
+Harden authentication, classify API failures, introduce World recovery states, verify environment configuration, validate migrations, and smoke-test the critical product path.
 
-### Phase 8 — User Validation ⏳
+### Phase 8 — Production Deployment 🚧
+
+Secure production configuration, deploy infrastructure and application services, and verify the live product lifecycle.
+
+### Phase 9 — User Validation ⏳
 
 Validate the core product question with real users:
 
@@ -339,8 +454,11 @@ Validate the core product question with real users:
 git clone <repository-url>
 
 cd anubhav
+```
 
-# Start PostgreSQL + pgvector
+Locate and start the Docker Compose infrastructure:
+
+```bash
 docker compose up -d
 ```
 
@@ -350,6 +468,8 @@ docker compose up -d
 cd apps/api
 
 pip install -r requirements.txt
+
+alembic upgrade head
 
 uvicorn main:app --reload
 ```
@@ -385,10 +505,13 @@ Detailed project documentation is maintained separately from the README.
 Documentation includes:
 
 - Founder Handover & Product Continuity Bible
-- Junior Developer Handover
+- Junior Developer Handovers
 - Architecture and Engineering Decisions
 - Sprint Reports
+- Deployment Readiness Reports
 - Product and Validation Notes
+
+Sprint 17 also introduced a reproducible critical-path smoke-validation workflow for future regression testing.
 
 The README intentionally remains a concise overview of the product and its current state.
 
