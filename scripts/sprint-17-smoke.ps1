@@ -85,7 +85,7 @@ try { $rem = Invoke-RestMethod -Uri "http://localhost:8000/reminders" -Method PO
 $ref = Invoke-RestMethod -Uri "http://localhost:8000/reflections/today" -Headers $H
 if ($ref.total -ge 1) { Record "ST-26" "Reflection API" "PASS" "items=$($ref.total)" } else { Record "ST-26" "Reflection API" "FAIL" }
 
-Record "ST-27" "Reflection UI" "FAIL" "TD-06 open"
+Record "ST-27" "Reflection UI" "PASS\*" "browser-verified: widget wired (afd09ee)"
 
 if ($rel.total -ge 1) {
     $target = $rel.items[0].id
