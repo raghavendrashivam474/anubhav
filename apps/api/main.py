@@ -14,6 +14,18 @@ from app.routers import auth, anubhav, health
 from app.routers import reminder, reflections
 from app.scheduler import run_scheduler
 
+# ─────────────────────────────────────────────────────────────
+# Application-level logging configuration
+# Ensures logger.info/warning/error calls from all app modules
+# are visible in stdout for local dev and production monitoring.
+# Uvicorn's own access logs remain unchanged.
+# ─────────────────────────────────────────────────────────────
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
+
 logger = logging.getLogger(__name__)
 
 
