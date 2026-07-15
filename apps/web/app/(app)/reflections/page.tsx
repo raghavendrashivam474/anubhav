@@ -5,6 +5,7 @@ import Link from "next/link"
 import { getReminders, deleteReminder } from "@/services/api"
 import { Reminder } from "@/types"
 import { Bell, Trash2, Clock } from "lucide-react"
+import TodaysReflections from "@/components/reflections/TodaysReflections"
 
 export default function ReflectionsPage() {
   const [reminders, setReminders] = useState<Reminder[]>([])
@@ -52,6 +53,8 @@ export default function ReflectionsPage() {
       </div>
 
       {error && <p className="text-sm text-red-500">{error}</p>}
+
+      <TodaysReflections />
 
       <div className="space-y-4">
         <div className="flex items-center gap-2">
