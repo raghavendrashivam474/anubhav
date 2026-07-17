@@ -98,3 +98,42 @@ export interface RelatedResponse {
 
 export type Category = 'career' | 'relationships' | 'health' | 'money' | 'mindset' | 'life'
 export type Source = 'myself' | 'friend' | 'book' | 'podcast' | 'observation'
+
+// ─────────────────────────────────────────────────────────────
+// Sprint 18: Multi-Source Wisdom Capture
+// ─────────────────────────────────────────────────────────────
+
+export type CaptureSource = 'book'
+
+export interface OcrResult {
+  extracted_text: string
+  word_count: number
+  confidence: 'high' | 'medium' | 'low'
+}
+
+export interface BookMetadata {
+  book_title?: string
+  author?: string
+  page_number?: string
+}
+
+export interface CaptureSubmission {
+  source: CaptureSource
+  ocr_text: string
+  personal_insight: string
+  metadata?: BookMetadata
+}
+
+export interface WisdomEntry {
+  id: string
+  user_id: string
+  what_happened: string
+  lesson: string | null
+  summary: string | null
+  category: string
+  source: string
+  source_metadata: BookMetadata | null
+  tags: Tag[]
+  created_at: string
+  updated_at: string
+}

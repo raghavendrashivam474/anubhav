@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useEffect } from "react"
 import { useSearchParams } from "next/navigation"
@@ -7,7 +7,7 @@ import { useCamera } from "@/world/camera/useCamera"
 import WorldRenderer from "@/world/renderer/WorldRenderer"
 import ExperienceDock from "@/world/components/ExperienceDock"
 import Link from "next/link"
-import { Plus, RotateCcw, ZoomIn, ZoomOut, RefreshCw } from "lucide-react"
+import { Plus, RotateCcw, ZoomIn, ZoomOut, RefreshCw, Book } from "lucide-react"
 
 export default function WorldPage() {
   const searchParams = useSearchParams()
@@ -152,6 +152,13 @@ export default function WorldPage() {
           <RotateCcw size={14} />
         </button>
         <Link
+          href="/capture"
+          className="px-3 py-2 text-xs bg-slate-900/70 backdrop-blur hover:bg-slate-800 text-slate-200 border border-slate-700 rounded-lg transition-colors flex items-center gap-1.5 font-medium"
+        >
+          <Book size={12} />
+          Capture
+        </Link>
+        <Link
           href="/experiences/new"
           className="px-3 py-2 text-xs bg-white/90 backdrop-blur hover:bg-white text-stone-800 rounded-lg transition-colors flex items-center gap-1.5 font-medium"
         >
@@ -190,3 +197,4 @@ export default function WorldPage() {
     </div>
   )
 }
+

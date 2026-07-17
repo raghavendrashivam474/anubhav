@@ -120,3 +120,22 @@ export const getRelatedAnubhavs = (id: string, limit = 5) =>
 
 export const getAllConnections = () =>
   api.get("/anubhavs/connections").then(r => r.data)
+
+// ─────────────────────────────────────────────────────────────
+// Sprint 18: Multi-Source Wisdom Capture
+// ─────────────────────────────────────────────────────────────
+
+export const uploadForOcr = (imageFile: File) => {
+  const formData = new FormData()
+  formData.append("image", imageFile)
+  return api.post("/capture/ocr", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  }).then(r => r.data)
+}
+
+export const submitCapture = (payload: {
+  source: string
+  ocr_text: string
+  personal_insight: string
+  metadata?: Record<string, string | undefined>
+}) => api.post("/capture", payload).then(r => r.data)
