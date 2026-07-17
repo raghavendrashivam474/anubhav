@@ -1,4 +1,4 @@
-﻿import asyncio
+import asyncio
 import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -11,15 +11,15 @@ from app.models.tag import Tag
 from app.models.reminder import Reminder
 from app.models.relationship import ExperienceRelationship
 from app.routers import auth, anubhav, health
-from app.routers import reminder, reflections
+from app.routers import reminder, reflections, capture
 from app.scheduler import run_scheduler
 
-# ─────────────────────────────────────────────────────────────
+# -------------------------------------------------------------
 # Application-level logging configuration
 # Ensures logger.info/warning/error calls from all app modules
 # are visible in stdout for local dev and production monitoring.
 # Uvicorn's own access logs remain unchanged.
-# ─────────────────────────────────────────────────────────────
+# -------------------------------------------------------------
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s %(levelname)s %(name)s: %(message)s",
@@ -60,6 +60,7 @@ app.include_router(auth.router)
 app.include_router(anubhav.router)
 app.include_router(reminder.router)
 app.include_router(reflections.router)
+app.include_router(capture.router)
 
 
 @app.get("/")
