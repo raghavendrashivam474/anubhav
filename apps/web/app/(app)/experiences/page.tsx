@@ -1,10 +1,11 @@
-﻿"use client"
+"use client"
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { getAnubhavs } from "@/services/api"
 import { Anubhav } from "@/types"
 import { Plus, ChevronLeft, ChevronRight } from "lucide-react"
+import { SourceBadge } from "@/components/ui/SourceBadge"
 
 const CATEGORIES = ["all", "career", "relationships", "health", "money", "mindset", "life"]
 
@@ -95,8 +96,7 @@ export default function ExperiencesPage() {
                     ))}
                   </div>
                 </div>
-                <div className="flex flex-col items-end gap-2 shrink-0">
-                  <span className="text-xs px-2 py-1 bg-stone-100 text-stone-500 rounded-full capitalize">
+                <div className="flex flex-col items-end gap-2 shrink-0"><SourceBadge source={item.source} /><span className="text-xs px-2 py-1 bg-stone-100 text-stone-500 rounded-full capitalize">
                     {item.category}
                   </span>
                   <span className="text-xs text-stone-400">
@@ -131,3 +131,4 @@ export default function ExperiencesPage() {
     </div>
   )
 }
+
