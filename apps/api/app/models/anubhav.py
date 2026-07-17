@@ -1,11 +1,11 @@
-import enum
+﻿import enum
 import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING
 
 from pgvector.sqlalchemy import Vector
 from sqlalchemy import Column, DateTime, Enum, ForeignKey, Table, Text
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.database import Base
@@ -83,8 +83,12 @@ class Anubhav(Base):
         default=Source.MYSELF,
     )
 
-    # AI embedding — 1536 dims = OpenAI text-embedding-3-small
-    # AI embedding — 384 dims = all-MiniLM-L6-v2 (sentence-transformers)
+    # Source metadata — stores book title, author, page number etc.
+    # Nullable — only populated for non-experience sources
+    source_metadata: Mapped[dict | None] = mapped_column(
+        JSONB, nullable=True
+    )
+
     # AI embedding — 384 dims = all-MiniLM-L6-v2 (sentence-transformers)
     embedding: Mapped[list[float] | None] = mapped_column(
         Vector(384), nullable=True
