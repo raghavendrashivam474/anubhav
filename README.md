@@ -425,7 +425,7 @@ alembic upgrade head
 Start the development server.
 
 ```bash
-uvicorn app.main:app --reload
+uvicorn main:app --reload
 ```
 
 Backend will be available at:
